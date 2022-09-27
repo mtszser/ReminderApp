@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/actionFragment">
+
+    <fragment
+        android:id="@+id/actionFragment"
+        android:name="com.mtszser.reminderapp.view.ActionFragment"
+        android:label="fragment_action"
+        tools:layout="@layout/fragment_action" >
+        <action
+            android:id="@+id/action_actionFragment_to_waterFragment"
+            app:destination="@id/waterFragment" />
+        <action
+            android:id="@+id/action_actionFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.mtszser.reminderapp.view.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_waterFragment"
+            app:destination="@id/waterFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_actionFragment"
+            app:destination="@id/actionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/waterFragment"
+        android:name="com.mtszser.reminderapp.view.WaterFragment"
+        android:label="fragment_water"
+        tools:layout="@layout/fragment_water" >
+        <action
+            android:id="@+id/action_waterFragment_to_actionFragment"
+            app:destination="@id/actionFragment" />
+        <action
+            android:id="@+id/action_waterFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+</navigation>

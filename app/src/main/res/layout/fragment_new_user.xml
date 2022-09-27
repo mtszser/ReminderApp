@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.NewUserFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#D8F3FD">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/account_info"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#85FFFFFF"
+            android:orientation="vertical"
+            android:padding="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Your Name" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Height" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Weight" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/black"
+                android:text="Woman">
+
+            </androidx.appcompat.widget.AppCompatCheckBox>
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/black"
+                android:text="Man" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/black"
+                android:text="Other">
+
+            </androidx.appcompat.widget.AppCompatCheckBox>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/getUser"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:layout_marginEnd="10dp"
+                    android:text="Show"
+                    android:textSize="20sp">
+
+                </androidx.appcompat.widget.AppCompatButton>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/saveUser"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:layout_marginStart="10dp"
+                    android:text="SAVE"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>
