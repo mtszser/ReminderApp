@@ -16,7 +16,7 @@ import javax.inject.Inject
 class NewUserViewModel @Inject constructor(private val repo: UserRepository): ViewModel() {
 
     private val _allUsers = MutableLiveData<List<UserProfile>>()
-    val allUsers = _allUsers as LiveData<List<UserProfile>>
+    private val allUsers = _allUsers as LiveData<List<UserProfile>>
     private val _state = MutableLiveData<State>()
     val state = _state as LiveData<State>
 
@@ -27,9 +27,21 @@ class NewUserViewModel @Inject constructor(private val repo: UserRepository): Vi
     fun startApp() {
         _allUsers.value = repo.allUsers.value
         val list: List<UserProfile>? = allUsers.value
-        _state.value = _state.value?.copy(
+        list?.forEach { userProfile -> _state.value = _state.value?.copy(
+            name = userProfile.firstName,
+            weight = userProfile.weight,
+            height = userProfile.height,
             userList = list
-        )
+        ) }
+
+
+//        _state.value = _state.value?.copy(
+//            name = "${list?.forEach { it.firstName }}",
+//            weight = "${list?.forEach { it.weight }}",
+//            height = "${list?.forEach { it.height }}",
+//            userList = list
+//
+//        )
 
     }
 

@@ -42,10 +42,9 @@ class NewUserFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentNewUserBinding.inflate(inflater, container, false)
-        userModel.startApp()
         userModel.getAll().observe(viewLifecycleOwner, Observer {
             if (!it.isNullOrEmpty()) {
-               startApp()
+               startApp1()
             } else {
                 Toast.makeText(context, "Hey stranger! Tell me about yourself.", Toast.LENGTH_SHORT).show()
                 binding.saveUser.setOnClickListener {
@@ -59,9 +58,11 @@ class NewUserFragment : Fragment() {
         return binding.root
     }
 
-    private fun startApp() {
+    private fun startApp1() {
+        userModel.startApp()
         userModel.state.observe(viewLifecycleOwner, Observer { state ->
-            val text = "${state.userList} "
+            val text = "profile name is: ${state.name}, weight is: ${state.weight}, height is: " +
+                    "${state.height}."
             binding.modelText.text = text
             Log.i("lista", "${state.userList}")
         })
@@ -71,6 +72,9 @@ class NewUserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(binding) {
 
+            userModel.state.observe(viewLifecycleOwner, Observer {
+                state -> val text = "$state"
+            })
         }
 
     }
