@@ -2,6 +2,7 @@ package com.mtszser.reminderapp.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.mtszser.reminderapp.databinding.FragmentWaterBinding
 import com.mtszser.reminderapp.model.UserProfile
 import com.mtszser.reminderapp.model.WaterData
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,15 +28,15 @@ class WaterViewModel(): ViewModel() {
 
     fun refreshWater() {
         fetchWater()
-
     }
+
 
 
     private fun fetchWater() {
         _itemsLoading.value = true
 
 
-        val itemList = listOf(WaterData("3000", "1200"),
+        val itemList = listOf(WaterData("2500", "0"),
         )
 
         _itemsLoadError.value = false
@@ -44,6 +45,7 @@ class WaterViewModel(): ViewModel() {
 
 
     }
+
 
 
 

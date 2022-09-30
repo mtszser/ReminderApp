@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/waterReminder"
+    <item android:id="@+id/waterFragment"
         android:icon="@drawable/ic_baseline_water_drop_24"
         android:title="Water Reminder"/>
-    <item android:id="@+id/actionReminder"
+    <item android:id="@+id/actionFragment"
         android:icon="@drawable/ic_baseline_create_24"
         android:title="Action Reminder" />
-    <item android:id="@+id/options"
-        android:icon="@drawable/ic_baseline_settings_24"
-        android:title="Settings" />
+    <item android:id="@+id/newUserFragment"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="Your Profile" />
 
 </menu>

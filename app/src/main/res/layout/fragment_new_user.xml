@@ -12,7 +12,7 @@
         android:background="#D8F3FD">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/modelText"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -36,7 +36,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
+            app:layout_constraintTop_toBottomOf="@+id/modelText">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name"

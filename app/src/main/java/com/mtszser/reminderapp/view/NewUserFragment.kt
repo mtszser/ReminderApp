@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -24,9 +25,16 @@ class NewUserFragment : Fragment() {
 
 
     private lateinit var binding: FragmentNewUserBinding
-    private var ID = (1..100).shuffled().first()
-    private lateinit var newUserModel: NewUserViewModel
+    private val userModel: NewUserViewModel by viewModels()
 
+    private val name: String
+        get() = binding.name.text.toString()
+
+    private val weight: String
+        get() = binding.weight.text.toString()
+
+    private val height: String
+        get() = binding.height.text.toString()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,65 +42,42 @@ class NewUserFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentNewUserBinding.inflate(inflater, container, false)
+        userModel.startApp()
+        userModel.getAll().observe(viewLifecycleOwner, Observer {
+            if (!it.isNullOrEmpty()) {
+               startApp()
+            } else {
+                Toast.makeText(context, "Hey stranger! Tell me about yourself.", Toast.LENGTH_SHORT).show()
+                binding.saveUser.setOnClickListener {
+                    val userProfile = UserProfile(0, name, weight, height)
+                    userModel.insert(userProfile)
+                }
+            }
+        })
 
 
-        startUser()
         return binding.root
     }
 
-
-    private fun startUser() {
-        newUserModel = ViewModelProvider(this)[NewUserViewModel::class.java]
-        val isProfile = newUserModel.getAll()
-
-        isProfile.observe(viewLifecycleOwner, Observer {
-            if (it.isNotEmpty()) {
-                startApp()
-
-            } else {
-                Toast.makeText(context, "Hey stranger! Tell me about yourself.", Toast.LENGTH_SHORT).show()
-                binding.saveUser.setOnClickListener{
-                    saveData()
-                }
-            }
-
-        })
-
-
-    }
-
     private fun startApp() {
-        val fragmentManager = activity?.supportFragmentManager
-        val fragmentTransaction = fragmentManager?.beginTransaction()
-        fragmentTransaction?.replace(R.id.frameLayout, WaterFragment())
-        fragmentTransaction?.commit()
-    }
-
-    private fun getInfo() {
-
-       val dusza = newUserModel.getAll()
-        dusza.observe(viewLifecycleOwner, Observer {
-            it -> it?.let { binding.textView.text = it.toString() }
+        userModel.state.observe(viewLifecycleOwner, Observer { state ->
+            val text = "${state.userList} "
+            binding.modelText.text = text
+            Log.i("lista", "${state.userList}")
         })
 
-
-
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        with(binding) {
 
-    private fun saveData() {
-        val name = binding.name.text.toString()
-        val weight = binding.weight.text.toString()
-        val height = binding.height.text.toString()
-        val profile = UserProfile(ID, name, weight, height)
-        Log.i("userProfle", profile.toString())
-
-        newUserModel.insert(profile)
+        }
 
     }
-
-
-
 
 
 }
+
+
+
+

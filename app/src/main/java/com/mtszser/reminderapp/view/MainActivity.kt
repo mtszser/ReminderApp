@@ -3,11 +3,22 @@ package com.mtszser.reminderapp.view
 import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI.setupWithNavController
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.ActivityMainBinding
+import com.mtszser.reminderapp.viewmodel.NewUserViewModel
 import com.mtszser.reminderapp.viewmodel.WaterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var waterModel: WaterViewModel
+    private val newUserViewModel: NewUserViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,30 +34,23 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        waterModel = ViewModelProvider(this)[WaterViewModel::class.java]
-        replaceFragment(NewUserFragment())
-        binding.bottomNav.setOnItemSelectedListener {
-            when (it.itemId){
-                R.id.actionReminder -> replaceFragment(ActionFragment())
-                R.id.options -> replaceFragment(SettingsFragment())
-                R.id.waterReminder -> replaceFragment((WaterFragment()))
+        getNav()
 
-                else -> {
-                    Toast.makeText(applicationContext, "What are you trying to do?",
-                        Toast.LENGTH_SHORT).show()}
+    }
 
-            }
-            true
+    private fun getNav() {
 
-        }
+        val bottomMenu = binding.bottomNav
+        val navController = findNavController(R.id.fragment)
+        bottomMenu.setupWithNavController(navController)
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.waterFragment, R.id.actionFragment,
+            R.id.newUserFragment))
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
 
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frameLayout, fragment)
-        fragmentTransaction.commit()
-    }
+
+
+
 }
