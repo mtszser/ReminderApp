@@ -9,7 +9,7 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
 
     val allUsers: LiveData<List<UserProfile>> = userDao.getAll()
 
-    suspend fun insert(userProfile: UserProfile) {
+    fun insert(userProfile: UserProfile) {
         userDao.insert(userProfile)
     }
 
@@ -20,5 +20,7 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
     fun getAll(): LiveData<List<UserProfile>> {
         return userDao.getAll()
     }
+
+
 
 }

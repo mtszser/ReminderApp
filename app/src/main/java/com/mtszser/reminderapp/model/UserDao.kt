@@ -10,13 +10,14 @@ interface UserDao {
     fun getAll(): LiveData<List<UserProfile>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(userProfile: UserProfile)
+    fun insert(userProfile: UserProfile)
 
     @Delete
     fun delete(userProfile: UserProfile)
 
     @Update
     fun update(userProfile: UserProfile)
+
 
 
 

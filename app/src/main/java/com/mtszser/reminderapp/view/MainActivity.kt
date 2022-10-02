@@ -1,25 +1,19 @@
 package com.mtszser.reminderapp.view
 
-import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.ActivityMainBinding
 import com.mtszser.reminderapp.viewmodel.NewUserViewModel
-import com.mtszser.reminderapp.viewmodel.WaterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,18 +33,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getNav() {
-
-        val bottomMenu = binding.bottomNav
-        val navController = findNavController(R.id.fragment)
-        bottomMenu.setupWithNavController(navController)
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.waterFragment, R.id.actionFragment,
-            R.id.newUserFragment))
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        newUserViewModel.getAll().observe(this, Observer {
+            if (!it.isNullOrEmpty()){
+                getNavigation()
+                Log.i("duaa", "$it")
+            } else{
+                val navController = findNavController(R.id.fragment)
+                navController.navigate(R.id.newUserFragment)
+            }
+        })
 
 
     }
+    private fun getNavigation() {
+        val bottomMenu = binding.bottomNav
+        bottomMenu.visibility = View.VISIBLE
+        val navController = findNavController(R.id.fragment)
+        val startDestination = navController.graph.startDestinationId
+        val navOptions = NavOptions.Builder().setPopUpTo(startDestination, true).build()
+        navController.navigate(startDestination, null, navOptions)
+        bottomMenu.setupWithNavController(navController)
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.waterFragment, R.id.actionFragment,
+            R.id.settingsFragment))
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
-
+    }
 
 
 }

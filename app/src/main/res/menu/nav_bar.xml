@@ -6,7 +6,7 @@
     <item android:id="@+id/actionFragment"
         android:icon="@drawable/ic_baseline_create_24"
         android:title="Action Reminder" />
-    <item android:id="@+id/newUserFragment"
+    <item android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="Your Profile" />
 

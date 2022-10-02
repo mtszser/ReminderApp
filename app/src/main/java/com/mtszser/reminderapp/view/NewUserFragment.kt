@@ -8,16 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.FragmentNewUserBinding
 import com.mtszser.reminderapp.model.UserProfile
-import com.mtszser.reminderapp.model.WaterData
 import com.mtszser.reminderapp.viewmodel.NewUserViewModel
-import com.mtszser.reminderapp.viewmodel.WaterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,17 +36,6 @@ class NewUserFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentNewUserBinding.inflate(inflater, container, false)
-        userModel.getAll().observe(viewLifecycleOwner, Observer {
-            if (!it.isNullOrEmpty()) {
-               startApp1()
-            } else {
-                Toast.makeText(context, "Hey stranger! Tell me about yourself.", Toast.LENGTH_SHORT).show()
-                binding.saveUser.setOnClickListener {
-                    val userProfile = UserProfile(0, name, weight, height)
-                    userModel.insert(userProfile)
-                }
-            }
-        })
 
 
         return binding.root
@@ -70,17 +53,25 @@ class NewUserFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        with(binding) {
 
-            userModel.state.observe(viewLifecycleOwner, Observer {
-                state -> val text = "$state"
+            userModel.getAll().observe(viewLifecycleOwner, Observer {
+                if (it.isNullOrEmpty()) {
+                    Toast.makeText(
+                        context,
+                        "Hey stranger! Tell me about yourself.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.saveUser.setOnClickListener {
+                        val userProfile = UserProfile(0, name, weight, height)
+                        userModel.insert(userProfile)
+                    }
+                }
             })
         }
 
     }
 
 
-}
 
 
 
