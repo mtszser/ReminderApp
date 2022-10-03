@@ -21,12 +21,16 @@ class NewUserViewModel @Inject constructor(private val repo: UserRepository): Vi
     val state = _state as LiveData<State>
 
     init {
-        _state.value = State()
+        viewModelScope.launch {
+            _allUsers.value = repo.getAll()
+            _state.value = State()
+
+        }
     }
 
     fun startApp() {
-        _allUsers.value = repo.allUsers.value
         val list: List<UserProfile>? = allUsers.value
+        Log.d("lista", "$list")
         list?.forEach { userProfile -> _state.value = _state.value?.copy(
             name = userProfile.firstName,
             weight = userProfile.weight,
@@ -41,18 +45,18 @@ class NewUserViewModel @Inject constructor(private val repo: UserRepository): Vi
     fun insert(userProfile: UserProfile) = viewModelScope.launch(Dispatchers.IO) {
         repo.insert(userProfile)
     }
-
     fun update(userProfile: UserProfile) = viewModelScope.launch(Dispatchers.IO) {
         repo.update(userProfile)
     }
 
-    fun getAll(): LiveData<List<UserProfile>> = repo.allUsers
+
+
 
     data class State(
         val name: String? = "",
         val weight: String? = "",
         val height: String? = "",
-        val userList: List<UserProfile>? = listOf(UserProfile(0,name, weight, height))
+        val userList: List<UserProfile>? = listOf()
 
 
     )

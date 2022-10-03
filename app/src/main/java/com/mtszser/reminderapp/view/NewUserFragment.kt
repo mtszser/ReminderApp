@@ -1,5 +1,6 @@
 package com.mtszser.reminderapp.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -41,20 +42,9 @@ class NewUserFragment : Fragment() {
         return binding.root
     }
 
-    private fun startApp1() {
-        userModel.startApp()
-        userModel.state.observe(viewLifecycleOwner, Observer { state ->
-            val text = "profile name is: ${state.name}, weight is: ${state.weight}, height is: " +
-                    "${state.height}."
-            binding.modelText.text = text
-            Log.i("lista", "${state.userList}")
-        })
-
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-            userModel.getAll().observe(viewLifecycleOwner, Observer {
+            userModel.allUsers.observe(viewLifecycleOwner, Observer {
                 if (it.isNullOrEmpty()) {
                     Toast.makeText(
                         context,
@@ -62,8 +52,11 @@ class NewUserFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     binding.saveUser.setOnClickListener {
+                        userModel.startApp()
                         val userProfile = UserProfile(0, name, weight, height)
                         userModel.insert(userProfile)
+//                        val intent = Intent(context, MainActivity::class.java)
+//                        startActivity(intent)
                     }
                 }
             })

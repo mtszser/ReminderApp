@@ -1,7 +1,9 @@
 package com.mtszser.reminderapp.view
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
@@ -23,8 +25,10 @@ class MainActivity : AppCompatActivity() {
     private val newUserViewModel: NewUserViewModel by viewModels()
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -32,17 +36,31 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     private fun getNav() {
-        newUserViewModel.getAll().observe(this, Observer {
+//        newUserViewModel.startApp()
+//        newUserViewModel.state.observe(this, Observer {
+//            if (!it.userList.isNullOrEmpty()){
+//                getNavigation()
+//                Log.i("duaa", "$it")
+//            } else {
+//                val navController = findNavController(R.id.fragment)
+//                navController.navigate(R.id.newUserFragment)
+//            }
+//        })
+
+        newUserViewModel.allUsers.observe(this, Observer {
             if (!it.isNullOrEmpty()){
                 getNavigation()
                 Log.i("duaa", "$it")
+
             } else{
                 val navController = findNavController(R.id.fragment)
                 navController.navigate(R.id.newUserFragment)
+
+
             }
         })
-
 
     }
     private fun getNavigation() {

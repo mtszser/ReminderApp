@@ -7,7 +7,7 @@ import androidx.room.*
 interface UserDao {
 
     @Query("Select * from user_table")
-    fun getAll(): LiveData<List<UserProfile>>
+    suspend fun getAll(): List<UserProfile>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(userProfile: UserProfile)
