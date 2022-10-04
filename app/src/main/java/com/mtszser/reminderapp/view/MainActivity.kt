@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,8 +14,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.ActivityMainBinding
+import com.mtszser.reminderapp.model.UserProfile
 import com.mtszser.reminderapp.viewmodel.NewUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -33,17 +37,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getNav() {
-        newUserViewModel.getAll().observe(this, Observer {
-            if (!it.isNullOrEmpty()){
-                getNavigation()
-                Log.i("duaa", "$it")
-            } else{
-                val navController = findNavController(R.id.fragment)
-                navController.navigate(R.id.newUserFragment)
-            }
-        })
 
 
+            newUserViewModel.state.observe(this, Observer { state ->
+                when (state) {
+                    is NewUserViewModel.StateOfUser.Loaded -> {
+                        if (state.userList.isEmpty()) {
+                            Log.d("state ", "$state")
+                            val navController = findNavController(R.id.fragment)
+                            navController.navigate(R.id.newUserFragment)
+                            Log.d("state nima ", "$state")
+                        } else {
+                            getNavigation()
+                        }
+                    }
+                    NewUserViewModel.StateOfUser.Error -> {}
+                    NewUserViewModel.StateOfUser.Loading -> {}
+                }
+            })
     }
     private fun getNavigation() {
         val bottomMenu = binding.bottomNav
@@ -53,8 +64,7 @@ class MainActivity : AppCompatActivity() {
         val navOptions = NavOptions.Builder().setPopUpTo(startDestination, true).build()
         navController.navigate(startDestination, null, navOptions)
         bottomMenu.setupWithNavController(navController)
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.waterFragment, R.id.actionFragment,
-            R.id.settingsFragment))
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
     }

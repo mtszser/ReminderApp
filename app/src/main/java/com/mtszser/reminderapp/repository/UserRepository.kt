@@ -7,9 +7,7 @@ import javax.inject.Inject
 
 class UserRepository @Inject constructor(private val userDao: UserDao) {
 
-    val allUsers: LiveData<List<UserProfile>> = userDao.getAll()
-
-    fun insert(userProfile: UserProfile) {
+    suspend fun insert(userProfile: UserProfile) {
         userDao.insert(userProfile)
     }
 
@@ -17,7 +15,7 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
         userDao.update(userProfile)
     }
 
-    fun getAll(): LiveData<List<UserProfile>> {
+    suspend fun getAll(): List<UserProfile> {
         return userDao.getAll()
     }
 

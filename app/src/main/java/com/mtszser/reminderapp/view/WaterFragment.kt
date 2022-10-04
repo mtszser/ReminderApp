@@ -8,6 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.FragmentWaterBinding
 import com.mtszser.reminderapp.model.UserProfile
 import com.mtszser.reminderapp.viewmodel.WaterViewModel
@@ -29,56 +34,30 @@ class WaterFragment : Fragment() {
         binding = FragmentWaterBinding.inflate(inflater, container, false)
         return binding.root
 
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        startModel()
         startWater()
 
 
+
+
     }
+
 
     private fun startWater() {
 
         waterModel.countWaterIntake()
-        waterModel.allUsers.observe(viewLifecycleOwner, Observer {
-            if (it.isNullOrEmpty()) {
-                Log.i("dupa", "JEST PUSTE")
-            }
+        waterModel.stateOfWater.observe(viewLifecycleOwner, Observer {
+            val water = it.waterContainer?.toInt()
+            val intake = water?.times(24)
+            binding.waterContainer.text = intake.toString()
         })
-//        waterModel.allUsers.observe(viewLifecycleOwner, Observer {
-//            if (it.isNullOrEmpty()){
-//                Log.d("dupa", "to jest puste kurwa")
-//            }
-//        })
 
-//        waterModel.stateOfWater.observe(viewLifecycleOwner, Observer { stateOfWater ->
-//            val text = "${stateOfWater.waterIntake}"
-//            Log.i("Water Fragment container", text)
-//            binding.waterContainer.text = text
-//        })
     }
 
-
-    private fun startModel() {
-//        waterModel.refreshWater()
-//        waterModel.itemsLoadError.observe(viewLifecycleOwner, Observer { isError ->
-//            isError?.let {
-//                binding.listError.visibility = if (it) View.VISIBLE else View.GONE
-//                binding.waterContainer.visibility = if (it) View.GONE else View.VISIBLE
-//            }
-//        })
-
-//        waterModel.items.observe(viewLifecycleOwner, Observer {
-//            if(it.isNotEmpty()){
-//                binding.waterContainer.apply {
-//                    waterModel.items.value?.forEach{items -> text = "${items.alreadyDrank}" + " / " +
-//                            "${items.contCap}"}
-//                }
-//            }
-//
-//        })
-    }
 }
+
 
