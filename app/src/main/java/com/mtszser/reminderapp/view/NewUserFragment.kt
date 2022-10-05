@@ -20,9 +20,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.FragmentNewUserBinding
+import com.mtszser.reminderapp.model.ActionReminder
 import com.mtszser.reminderapp.model.UserProfile
+import com.mtszser.reminderapp.model.WaterReminder
 import com.mtszser.reminderapp.viewmodel.NewUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
 
 @AndroidEntryPoint
 class NewUserFragment : Fragment() {
@@ -60,7 +63,11 @@ class NewUserFragment : Fragment() {
                     if (it.userList.isEmpty()) {
                         Log.i("dupa", "jest puste")
                         binding.saveUser.setOnClickListener {
-                            val userProfile = UserProfile(0, firstName = name, weight = weight, height = height)
+                            // zmienna z policzoną ilością wody do spożycia
+                            val waterIntake = userModel.countWater(weight = weight)
+                            val waterList = WaterReminder(0, waterContainer = waterIntake, 0.0)
+                            val actionReminder = ActionReminder(0, "dupa", "dupa")
+                            val userProfile = UserProfile(0, firstName = name, weight = weight, height = height, waterList, actionReminder )
                             userModel.insert(userProfile)
                         }
                     } else {

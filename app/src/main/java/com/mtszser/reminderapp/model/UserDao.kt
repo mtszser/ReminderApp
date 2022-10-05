@@ -6,6 +6,8 @@ import androidx.room.*
 @Dao
 interface UserDao {
 
+    // User Reminder Table INTERFACE
+
     @Query("Select * from user_table")
     suspend fun getAll(): List<UserProfile>
 
@@ -13,13 +15,24 @@ interface UserDao {
     suspend fun insert(userProfile: UserProfile)
 
     @Delete
-    fun delete(userProfile: UserProfile)
+    suspend fun delete(userProfile: UserProfile)
 
     @Update
-    fun update(userProfile: UserProfile)
+    suspend fun update(userProfile: UserProfile)
+
+    // Water Reminder Table INTERFACE
+
+    @Query("Select waterContainer, waterId, alreadyDrank from user_table ")
+    suspend fun getWaterReminder(): WaterReminder
+
+    // Action Reminder Table INTERFACE
+
+    @Query("Select actionId, actionDesc, actionName from user_table ")
+    suspend fun getActionReminder(): ActionReminder
 
 
-
+//    @Query("Select actionReminder from user_table")
+//    suspend fun getActionReminder(): List<ActionReminder>
 
 
 }

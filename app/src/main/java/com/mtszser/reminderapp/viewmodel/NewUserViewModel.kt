@@ -19,7 +19,7 @@ class NewUserViewModel @Inject constructor(private val repo: UserRepository): Vi
 
         viewModelScope.launch {
             _state.postValue(StateOfUser.Loaded(
-                userList = repo.getAll()
+                userList = repo.getAll(),
             ))
         }
     }
@@ -32,8 +32,10 @@ class NewUserViewModel @Inject constructor(private val repo: UserRepository): Vi
         ))
 
     }
-    fun update(userProfile: UserProfile) = viewModelScope.launch(Dispatchers.IO) {
-        repo.update(userProfile)
+
+    fun countWater(weight: String): Double {
+        val weights = weight.toDouble()
+        return weights * 24
     }
 
 
