@@ -37,6 +37,29 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
 
     }
 
+    fun updateWater() = viewModelScope.launch() {
+        _stateOfWater.value = StateOfWater.Loaded(
+            countWaterList = repo.getWaterReminder(),
+        )
+    }
+
+
+    fun addWater(drunkWater: Int) = viewModelScope.launch(Dispatchers.IO) {
+        repo.updateWater(drunkWater)
+        _stateOfWater.postValue(StateOfWater.Loaded(
+            alreadyDrank = repo.getWaterReminder().alreadyDrank,
+            waterContainer = repo.getWaterReminder().waterContainer,
+            countWaterList = repo.getWaterReminder())
+        )
+
+    }
+
+    fun saveWater() = viewModelScope.launch(Dispatchers.IO) {
+        _stateOfWater.value = StateOfWater.Loaded(
+
+        )
+    }
+
 
 
 
@@ -44,7 +67,9 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
 
     sealed class StateOfWater{
         data class Loaded(
-            val countWaterList: WaterReminder? = WaterReminder(0, 0.0, 0.0),
+            val alreadyDrank: Int = 0,
+            val waterContainer: Int = 0,
+            val countWaterList: WaterReminder? = WaterReminder(0, waterContainer = waterContainer, alreadyDrank = alreadyDrank),
         ): StateOfWater()
         data class Loaded2(
             val userProfile: List<UserProfile>? = listOf(),

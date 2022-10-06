@@ -29,6 +29,10 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
         return userDao.getWaterReminder()
     }
 
+    suspend fun updateWater(drunkWater: Int){
+        userDao.updateWater(drunkWater = drunkWater)
+    }
+
     // Action Repo Functions
 
 //    suspend fun getActionReminder(): List<ActionReminder>{

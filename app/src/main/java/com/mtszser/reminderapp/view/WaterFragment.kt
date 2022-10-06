@@ -6,15 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations.distinctUntilChanged
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.FragmentWaterBinding
 import com.mtszser.reminderapp.model.UserProfile
 import com.mtszser.reminderapp.model.WaterReminder
@@ -45,35 +37,62 @@ class WaterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         startWater()
         getInfo()
+        getButtons()
 
 
 
 
+    }
+
+
+    private fun getButtons() {
+        binding.addWaterButton.setOnClickListener{
+            addWater(100)
+        }
+    }
+
+    private fun addWater(i: Int) {
+        waterModel.addWater(i)
     }
 
     private fun getInfo() {
         val repoWater = waterModel.allUsers.value
-        binding.waterContainer.text = repoWater?.waterContainer.toString()
+        binding.waterContainer.text = repoWater?.alreadyDrank.toString() + " / " +
+                repoWater?.waterContainer.toString() + "ml"
     }
 
 
     private fun startWater() {
-
+        waterModel.updateWater()
         waterModel.stateOfWater.observe(viewLifecycleOwner) {
             when (it) {
                 is WaterViewModel.StateOfWater.Loaded -> {
                     if (listOf(it.countWaterList).isNotEmpty()) {
-                           binding.waterContainer.text = it.countWaterList?.waterContainer.toString()
+                           binding.waterContainer.text = it.countWaterList?.alreadyDrank.toString() +
+                                   " / " + it.countWaterList?.waterContainer.toString() + "ml"
+                        setProgressBar(it.countWaterList?.waterContainer, it.countWaterList?.alreadyDrank)
                        }
                 }
                 is WaterViewModel.StateOfWater.Loaded2 -> {
 
                 }
+
                 WaterViewModel.StateOfWater.Error -> {}
                 WaterViewModel.StateOfWater.Loading -> {}
                 WaterViewModel.StateOfWater.IsEmpty -> {}
             }
         }
+    }
+
+    private fun setProgressBar(waterContainer: Int?, alreadyDrank: Int?) {
+        Log.d("progress bar" , "$alreadyDrank")
+        val progressBar = binding.waterProgressBar
+        progressBar.min = 0
+        if (waterContainer != null && alreadyDrank != null) {
+            progressBar.max = waterContainer
+            progressBar.progress = alreadyDrank
+        }
+        Log.d("progress" , "${progressBar.progress}")
     }
 }
 

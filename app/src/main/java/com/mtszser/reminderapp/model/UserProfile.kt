@@ -18,8 +18,8 @@ data class UserProfile(
 )
 data class WaterReminder(
     @PrimaryKey(autoGenerate = true) val waterId: Int,
-     val waterContainer: Double,
-     val alreadyDrank: Double,
+     val waterContainer: Int,
+     val alreadyDrank: Int,
 )
 data class ActionReminder(
     @PrimaryKey(autoGenerate = true) val actionId: Int,

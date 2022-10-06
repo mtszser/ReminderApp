@@ -57,6 +57,7 @@ class NewUserFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+
         userModel.state.observe(viewLifecycleOwner){
             when(it){
                 is NewUserViewModel.StateOfUser.Loaded -> {
@@ -65,7 +66,7 @@ class NewUserFragment : Fragment() {
                         binding.saveUser.setOnClickListener {
                             // zmienna z policzoną ilością wody do spożycia
                             val waterIntake = userModel.countWater(weight = weight)
-                            val waterList = WaterReminder(0, waterContainer = waterIntake, 0.0)
+                            val waterList = WaterReminder(0, waterContainer = waterIntake, 0)
                             val actionReminder = ActionReminder(0, "dupa", "dupa")
                             val userProfile = UserProfile(0, firstName = name, weight = weight, height = height, waterList, actionReminder )
                             userModel.insert(userProfile)
