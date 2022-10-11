@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,11 +13,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.ActivityMainBinding
-import com.mtszser.reminderapp.model.UserProfile
 import com.mtszser.reminderapp.viewmodel.NewUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -34,10 +31,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         getNav()
 
+
+
     }
 
     private fun getNav() {
-
 
             newUserViewModel.state.observe(this, Observer { state ->
                 when (state) {

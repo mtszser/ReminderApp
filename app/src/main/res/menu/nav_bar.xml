@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/waterFragment"
+    <item
+        android:id="@+id/waterFragment"
+        android:checked="false"
         android:icon="@drawable/ic_baseline_water_drop_24"
-        android:title="Water Reminder"/>
-    <item android:id="@+id/actionFragment"
+        android:iconTint="@color/theme_color"
+        android:title="Water Reminder" />
+    <item
+        android:id="@+id/actionFragment"
         android:icon="@drawable/ic_baseline_create_24"
+        android:iconTint="@color/black"
         android:title="Action Reminder" />
-    <item android:id="@+id/settingsFragment"
+    <item
+        android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_baseline_person_24"
+        android:iconTint="@color/black"
         android:title="Your Profile" />
 
 </menu>

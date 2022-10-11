@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="progress_bar">#A5ECF6</color>
     <color name="progress_bar2">#78E8F8</color>
+    <color name="theme_color">#90DDFB</color>
 </resources>

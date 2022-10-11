@@ -5,13 +5,16 @@
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/black</item>
         <!-- Customize your theme here. -->
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:color">@color/black</item>
     </style>
     <!--Circular Bar style -->
     <style name="CircularProgressBar">
@@ -19,6 +22,27 @@
         <item name="android:progressDrawable">@drawable/circular_progress_bar</item>
     </style>
 
-    <!-- Splash Screen theme. -->
+    <style name="Theme.SplashScreen1" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="colorPrimaryVariant">#90DDFB</item>
+        <item name="colorOnPrimary">#90DDFB</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">#90DDFB</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">#90DDFB</item>
+        <item name="android:navigationBarColor">#90DDFB</item>
+
+        <!-- Customize your theme here. -->
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+
+        <!-- This is to enable transition. -->
+        <item name="android:windowActivityTransitions">true</item>
+
+        <!-- Setting up enter and exit transition. -->
+    </style>
 
 </resources>

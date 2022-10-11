@@ -25,6 +25,7 @@ interface UserDao {
     @Query("Select waterContainer, waterId, alreadyDrank from user_table ")
     suspend fun getWaterReminder(): WaterReminder
 
+
     // Action Reminder Table INTERFACE
 
     @Query("Select actionId, actionDesc, actionName from user_table ")
@@ -37,5 +38,9 @@ interface UserDao {
 //    @Query("Select actionReminder from user_table")
 //    suspend fun getActionReminder(): List<ActionReminder>
 
+    @Query("Update user_table set containerId = :spinnerPos")
+    suspend fun saveSpinnerPos(spinnerPos: Int)
 
+    @Query("Select containerId from user_table")
+    suspend fun getContainerPos(): Int
 }

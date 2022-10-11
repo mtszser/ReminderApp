@@ -13,17 +13,18 @@ data class UserProfile(
     @ColumnInfo(name = "firstName") val firstName: String?,
     @ColumnInfo(name = "weight") val weight: String?,
     @ColumnInfo(name = "height") val height: String?,
+    @ColumnInfo(name = "containerId") val containerID: Int?,
     @Embedded val waterReminder: WaterReminder?,
     @Embedded val actionReminder: ActionReminder,
 )
 data class WaterReminder(
     @PrimaryKey(autoGenerate = true) val waterId: Int,
-     val waterContainer: Int,
-     val alreadyDrank: Int,
+    val waterContainer: Int,
+    val alreadyDrank: Int,
 )
 data class ActionReminder(
     @PrimaryKey(autoGenerate = true) val actionId: Int,
     val actionName: String,
     val actionDesc: String,
-//    val actionDate: LocalDate,
 )
+

@@ -6,16 +6,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.FragmentWaterBinding
 import com.mtszser.reminderapp.model.UserProfile
+import com.mtszser.reminderapp.model.WaterContainers
 import com.mtszser.reminderapp.model.WaterReminder
 import com.mtszser.reminderapp.viewmodel.WaterViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @AndroidEntryPoint
 class WaterFragment : Fragment() {
 
+    private lateinit var mySpinner: Spinner
+    private lateinit var adapter: ArrayAdapter<WaterContainers>
     private lateinit var binding: FragmentWaterBinding
     private val waterModel: WaterViewModel by viewModels()
 
@@ -38,8 +49,35 @@ class WaterFragment : Fragment() {
         startWater()
         getInfo()
         getButtons()
+        getSpinnerData()
 
 
+
+
+    }
+
+    private fun getSpinnerData() {
+        val spinner = waterModel.updateSpinner()
+        mySpinner = binding.changeContainer
+        adapter = ArrayAdapter(
+            requireContext(),
+            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+            spinner
+        )
+        waterModel.position.observe(viewLifecycleOwner, Observer { position ->
+            mySpinner.getItemAtPosition(position)
+        })
+        mySpinner.adapter = adapter
+        mySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, p3: Long) {
+                Log.d("zmiana", "$position")
+                waterModel.saveSpinnerPos(position)
+                waterModel.updateSpinnerPosition(position)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
 
 
     }
@@ -78,7 +116,7 @@ class WaterFragment : Fragment() {
                 }
 
                 WaterViewModel.StateOfWater.Error -> {}
-                WaterViewModel.StateOfWater.Loading -> {}
+                WaterViewModel.StateOfWater.Loading -> {binding.waterLayout.visibility = View.GONE}
                 WaterViewModel.StateOfWater.IsEmpty -> {}
             }
         }
@@ -94,6 +132,7 @@ class WaterFragment : Fragment() {
         }
         Log.d("progress" , "${progressBar.progress}")
     }
+
 }
 
 

@@ -3,4 +3,18 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="account_info">Are you a new user? Fill in your account information down below.</string>
+    <string name="woman">Woman</string>
+    <string name="man">Man</string>
+    <string name="other">Other</string>
+    <string name="save">SAVE</string>
+    <string name="name">Name</string>
+    <string-array name="water_containers">
+        <item>100ml</item>
+        <item>250ml</item>
+        <item>330ml</item>
+        <item>500ml</item>
+        <item>750ml</item>
+        <item>1L</item>
+        <item>1.5L</item>
+    </string-array>
 </resources>

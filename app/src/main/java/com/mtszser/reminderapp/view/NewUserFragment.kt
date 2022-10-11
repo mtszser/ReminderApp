@@ -1,21 +1,19 @@
 package com.mtszser.reminderapp.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mtszser.reminderapp.R
@@ -25,7 +23,6 @@ import com.mtszser.reminderapp.model.UserProfile
 import com.mtszser.reminderapp.model.WaterReminder
 import com.mtszser.reminderapp.viewmodel.NewUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
 
 @AndroidEntryPoint
 class NewUserFragment : Fragment() {
@@ -49,7 +46,13 @@ class NewUserFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentNewUserBinding.inflate(inflater, container, false)
+        val callBack = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.newUserFragment)
+            }
+        }
 
+        requireActivity().onBackPressedDispatcher.addCallback(callBack)
 
         return binding.root
     }
@@ -68,7 +71,7 @@ class NewUserFragment : Fragment() {
                             val waterIntake = userModel.countWater(weight = weight)
                             val waterList = WaterReminder(0, waterContainer = waterIntake, 0)
                             val actionReminder = ActionReminder(0, "dupa", "dupa")
-                            val userProfile = UserProfile(0, firstName = name, weight = weight, height = height, waterList, actionReminder )
+                            val userProfile = UserProfile(0, firstName = name, weight = weight, height = height,0 , waterList, actionReminder, )
                             userModel.insert(userProfile)
                         }
                     } else {

@@ -1,8 +1,6 @@
 package com.mtszser.reminderapp.repository
 
-import com.mtszser.reminderapp.model.UserDao
-import com.mtszser.reminderapp.model.UserProfile
-import com.mtszser.reminderapp.model.WaterReminder
+import com.mtszser.reminderapp.model.*
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(private val userDao: UserDao) {
@@ -39,4 +37,24 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
 //        return userDao.getActionReminder()
 //    }
 
+    fun insertSpinnerData(): ArrayList<WaterContainers> {
+        val containers = ArrayList<WaterContainers>()
+        containers.apply {
+            add(WaterContainers("0", "200", ""))
+            add(WaterContainers("1", "250", ""))
+            add(WaterContainers("2", "330", ""))
+            add(WaterContainers("3", "500", ""))
+            add(WaterContainers("4", "750", ""))
+            add(WaterContainers("5", "1000", ""))
+        }
+        return containers
+    }
+
+    suspend fun saveSpinnerPos(spinnerPos: Int){
+        userDao.saveSpinnerPos(spinnerPos)
+    }
+
+    suspend fun getContainerPos(): Int{
+        return userDao.getContainerPos()
+    }
 }
