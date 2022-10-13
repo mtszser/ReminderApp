@@ -34,6 +34,8 @@ interface UserDao {
     @Query("Update user_table set alreadyDrank = alreadyDrank + :drunkWater")
     suspend fun updateWater(drunkWater: Int)
 
+    @Query("Update user_table set alreadyDrank = 0")
+    suspend fun resetWater()
 
 //    @Query("Select actionReminder from user_table")
 //    suspend fun getActionReminder(): List<ActionReminder>

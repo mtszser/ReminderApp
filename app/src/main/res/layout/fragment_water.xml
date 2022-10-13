@@ -34,7 +34,7 @@
 
         <RelativeLayout
             android:id="@+id/waterLayout"
-            android:layout_width="300dp"
+            android:layout_width="350dp"
             android:layout_height="400dp"
             android:orientation="vertical">
 
@@ -64,20 +64,21 @@
 
             <ImageButton
                 android:id="@+id/addWaterButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="50dp"
-                android:background="@drawable/ic_baseline_water_drop_24">
-            </ImageButton>
+                android:background="@drawable/ic_baseline_add_24" />
+
 
             <ImageButton
                 android:id="@+id/waterClearButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
@@ -100,7 +101,6 @@
 
             </Spinner>
             </RelativeLayout>
-
     </LinearLayout>
 
 </LinearLayout>

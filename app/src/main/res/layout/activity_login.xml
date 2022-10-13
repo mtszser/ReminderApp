@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/mainLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:visibility="gone"
     android:layout_height="match_parent"
-    tools:context=".view.NewUserFragment">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#90D1EF">
-
-        <TextView
-            android:id="@+id/modelText"
-            android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/account_info"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+    android:background="#90D1EF"
+    tools:context=".view.LoginActivity">
+    <TextView
+        android:id="@+id/modelText"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/account_info"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         </TextView>
 
@@ -145,6 +143,3 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</FrameLayout>

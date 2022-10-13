@@ -41,11 +41,4 @@
             android:id="@+id/action_settingsFragment_to_actionFragment"
             app:destination="@id/actionFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/newUserFragment"
-        android:name="com.mtszser.reminderapp.view.NewUserFragment"
-        android:label="New User"
-        tools:layout="@layout/fragment_new_user"
-        app:popUpTo="@id/waterFragment"
-        app:popUpToInclusive="true"/>
 </navigation>

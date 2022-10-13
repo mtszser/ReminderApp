@@ -46,14 +46,23 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
         return repo.insertSpinnerData()
     }
 
-    fun updateSpinnerPosition(position: Int) {
+    fun updateSpinnerPosition(position: Int) = viewModelScope.launch() {
         _position.value = position
     }
 
-    fun getPosition() = viewModelScope.launch(Dispatchers.IO){
-        repo.getContainerPos()
+    fun getPosition() = viewModelScope.launch(){
+        _position.value = repo.getContainerPos()
     }
 
+    fun resetCap() = viewModelScope.launch {
+        repo.resetWater()
+        _stateOfWater.value = StateOfWater.Loaded(
+            alreadyDrank = 0,
+        )
+
+        updateWater()
+
+    }
 
 
     fun updateWater() = viewModelScope.launch() {

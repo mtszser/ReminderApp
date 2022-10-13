@@ -9,18 +9,14 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.FragmentWaterBinding
-import com.mtszser.reminderapp.model.UserProfile
 import com.mtszser.reminderapp.model.WaterContainers
-import com.mtszser.reminderapp.model.WaterReminder
 import com.mtszser.reminderapp.viewmodel.WaterViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
+
 
 @AndroidEntryPoint
 class WaterFragment : Fragment() {
@@ -33,14 +29,12 @@ class WaterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
 
         // Inflate the layout for this fragment
         binding = FragmentWaterBinding.inflate(inflater, container, false)
         return binding.root
-
-
 
     }
 
@@ -48,49 +42,44 @@ class WaterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         startWater()
         getInfo()
-        getButtons()
         getSpinnerData()
-
-
-
 
     }
 
     private fun getSpinnerData() {
         val spinner = waterModel.updateSpinner()
         mySpinner = binding.changeContainer
-        adapter = ArrayAdapter(
-            requireContext(),
-            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-            spinner
-        )
-        waterModel.position.observe(viewLifecycleOwner, Observer { position ->
-            mySpinner.getItemAtPosition(position)
-        })
+        adapter = ContainerAdapter(requireContext(), spinner)
         mySpinner.adapter = adapter
+        waterModel.getPosition()
+        waterModel.position.observe(viewLifecycleOwner, Observer { position ->
+            mySpinner.setSelection(position)
+        })
         mySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                Log.d("zmiana", "$position")
-                waterModel.saveSpinnerPos(position)
                 waterModel.updateSpinnerPosition(position)
+                waterModel.saveSpinnerPos(position)
+                when(position) {
+                    0 -> addWater(200)
+                    1 -> addWater(250)
+                    2 -> addWater(330)
+                    3 -> addWater(500)
+                    4 -> addWater(750)
+                    5 -> addWater(1000)
+                }
+
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
 
-
-    }
-
-
-    private fun getButtons() {
-        binding.addWaterButton.setOnClickListener{
-            addWater(100)
-        }
     }
 
     private fun addWater(i: Int) {
-        waterModel.addWater(i)
+        binding.addWaterButton.setOnClickListener{
+            waterModel.addWater(i)
+        }
     }
 
     private fun getInfo() {
@@ -129,6 +118,13 @@ class WaterFragment : Fragment() {
         if (waterContainer != null && alreadyDrank != null) {
             progressBar.max = waterContainer
             progressBar.progress = alreadyDrank
+        }
+        binding.waterClearButton.setOnClickListener{
+            if (alreadyDrank == 0){
+                Toast.makeText(context, "You can't reset 0 dummy :)", Toast.LENGTH_SHORT).show()
+            } else {
+                waterModel.resetCap()
+            }
         }
         Log.d("progress" , "${progressBar.progress}")
     }
