@@ -10,8 +10,10 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:itemTextColor="@color/black"
+        app:itemRippleColor="@color/progress_bar2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/nav_bar">
 

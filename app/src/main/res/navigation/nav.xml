@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_actionFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_actionFragment_to_settingsFragment2"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -40,5 +43,8 @@
         <action
             android:id="@+id/action_settingsFragment_to_actionFragment"
             app:destination="@id/actionFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_waterFragment2"
+            app:destination="@id/waterFragment" />
     </fragment>
 </navigation>

@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity() {
     }
     private fun getNavigation() {
         val bottomMenu = binding.bottomNav
-        bottomMenu.visibility = View.VISIBLE
         val navController = findNavController(R.id.fragment)
         val startDestination = navController.graph.startDestinationId
         val navOptions = NavOptions.Builder().setPopUpTo(startDestination, true).build()
