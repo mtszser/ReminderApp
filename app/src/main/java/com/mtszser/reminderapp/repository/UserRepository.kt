@@ -2,7 +2,13 @@ package com.mtszser.reminderapp.repository
 
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.model.*
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class UserRepository @Inject constructor(private val userDao: UserDao) {
 
@@ -62,4 +68,19 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
     suspend fun getContainerPos(): Int{
         return userDao.getContainerPos()
     }
+
+    fun getDate(): String {
+        val time = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        return formatter.format(time)
+    }
+
+    suspend fun updateDate(currentDate: String){
+        return userDao.updateDate(currentDate)
+    }
+
+    suspend fun getProfileDate(): String {
+        return userDao.getProfileDate()
+    }
+
 }

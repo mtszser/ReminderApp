@@ -41,7 +41,6 @@ class WaterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         startWater()
-        getInfo()
         getSpinnerData()
 
     }
@@ -82,15 +81,11 @@ class WaterFragment : Fragment() {
         }
     }
 
-    private fun getInfo() {
-        val repoWater = waterModel.allUsers.value
-        binding.waterContainer.text = repoWater?.alreadyDrank.toString() + " / " +
-                repoWater?.waterContainer.toString() + "ml"
-    }
 
 
     private fun startWater() {
         waterModel.updateWater()
+        waterModel.compareDates()
         waterModel.stateOfWater.observe(viewLifecycleOwner) {
             when (it) {
                 is WaterViewModel.StateOfWater.Loaded -> {

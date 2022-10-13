@@ -2,6 +2,7 @@ package com.mtszser.reminderapp.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import java.util.*
 
 @Dao
 interface UserDao {
@@ -22,8 +23,16 @@ interface UserDao {
 
     // Water Reminder Table INTERFACE
 
-    @Query("Select waterContainer, waterId, alreadyDrank from user_table ")
+    @Query("Select waterContainer, waterId, alreadyDrank, currentDate from user_table ")
     suspend fun getWaterReminder(): WaterReminder
+
+    @Query("Update user_table set currentDate = :currentDay")
+    suspend fun updateDate(currentDay: String)
+
+    @Query("Select currentDate from user_table")
+    suspend fun getProfileDate(): String
+
+
 
 
     // Action Reminder Table INTERFACE
@@ -45,4 +54,5 @@ interface UserDao {
 
     @Query("Select containerId from user_table")
     suspend fun getContainerPos(): Int
+
 }

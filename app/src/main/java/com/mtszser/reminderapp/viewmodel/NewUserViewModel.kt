@@ -40,6 +40,10 @@ class NewUserViewModel @Inject constructor(private val repo: UserRepository): Vi
         return weights * 24
     }
 
+    fun getDate(): String {
+        return repo.getDate()
+    }
+
 
     sealed class StateOfUser{
         data class Loaded(

@@ -21,6 +21,7 @@ data class WaterReminder(
     @PrimaryKey(autoGenerate = true) val waterId: Int,
     val waterContainer: Int,
     val alreadyDrank: Int,
+    val currentDate: String,
 )
 data class ActionReminder(
     @PrimaryKey(autoGenerate = true) val actionId: Int,

@@ -11,18 +11,21 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 @HiltViewModel
 class WaterViewModel @Inject constructor(private val repo: UserRepository): ViewModel() {
 
-    private val isNewDay = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-    private val _allUsers = MutableLiveData<WaterReminder>()
+    private val _currentDate = MutableLiveData<String>()
+    val currentDate = _currentDate as LiveData<String>
     private val _position = MutableLiveData<Int>()
     val position = _position as LiveData<Int>
-    val allUsers = _allUsers as LiveData<WaterReminder>
     private val _stateOfWater = MutableLiveData<StateOfWater>()
     val stateOfWater = _stateOfWater as LiveData<StateOfWater>
 
@@ -31,7 +34,6 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
     init {
         viewModelScope.launch {
             _position.value = repo.getContainerPos()
-            _allUsers.value = repo.getWaterReminder()
             _stateOfWater.value = StateOfWater.Loaded(
                 countWaterList = repo.getWaterReminder(),
             )
@@ -59,9 +61,7 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
         _stateOfWater.value = StateOfWater.Loaded(
             alreadyDrank = 0,
         )
-
         updateWater()
-
     }
 
 
@@ -75,11 +75,34 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
         repo.saveSpinnerPos(spinnerPos)
     }
 
+    fun compareDates() = viewModelScope.launch(Dispatchers.IO) {
+        val today = repo.getDate()
+        val profileDate = repo.getProfileDate()
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        val firstDate: Date = formatter.parse(today)
+        val secondDate: Date = formatter.parse(profileDate)
+        when {
+            firstDate.after(secondDate) -> {
+                updateDate(today)
+                resetCap()
+            }
+            firstDate.before(secondDate) -> {
+                //wtf happened here :D
+            }
+            firstDate == secondDate -> {
+                // its fine do nothing
+            }
+        }
 
-    fun compareDays(): Boolean {
-        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-        return false
+
     }
+
+
+    private fun updateDate(currentDate: String) = viewModelScope.launch(Dispatchers.IO) {
+        repo.updateDate(currentDate)
+    }
+
+
 
 
     fun addWater(drunkWater: Int) = viewModelScope.launch(Dispatchers.IO) {
@@ -99,7 +122,8 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
         data class Loaded(
             val alreadyDrank: Int = 0,
             val waterContainer: Int = 0,
-            val countWaterList: WaterReminder? = WaterReminder(0, waterContainer = waterContainer, alreadyDrank = alreadyDrank,),
+            val currentDate: String = "",
+            val countWaterList: WaterReminder? = WaterReminder(0, waterContainer = waterContainer, alreadyDrank = alreadyDrank, currentDate = currentDate ),
         ): StateOfWater()
         data class Loaded2(
             val userProfile: List<UserProfile>? = listOf(),

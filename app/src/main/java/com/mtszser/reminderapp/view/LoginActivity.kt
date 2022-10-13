@@ -50,7 +50,8 @@ class LoginActivity : AppCompatActivity() {
                         binding.saveUser.setOnClickListener {
                             // zmienna z policzoną ilością wody do spożycia
                             val waterIntake = userViewModel.countWater(weight = weight)
-                            val waterList = WaterReminder(0, waterContainer = waterIntake, 0)
+                            val currentDate = userViewModel.getDate()
+                            val waterList = WaterReminder(0, waterContainer = waterIntake, 0, currentDate)
                             val actionReminder = ActionReminder(0, "dupa", "dupa")
                             val userProfile = UserProfile(0, firstName = name, weight = weight, height = height,0 , waterList, actionReminder)
                             userViewModel.insert(userProfile)
