@@ -37,7 +37,7 @@ class NewUserViewModel @Inject constructor(private val repo: UserRepository): Vi
 
     fun countWater(weight: String): Int {
         val weights = weight.toInt()
-        return weights * 24
+        return weights * 35
     }
 
     fun getDate(): String {
