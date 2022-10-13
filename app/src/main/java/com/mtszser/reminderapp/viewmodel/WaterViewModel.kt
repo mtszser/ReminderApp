@@ -78,7 +78,7 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
     fun compareDates() = viewModelScope.launch(Dispatchers.IO) {
         val today = repo.getDate()
         val profileDate = repo.getProfileDate()
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
         val firstDate: Date = formatter.parse(today)
         val secondDate: Date = formatter.parse(profileDate)
         when {

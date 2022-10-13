@@ -71,7 +71,7 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
 
     fun getDate(): String {
         val time = Calendar.getInstance().time
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
         return formatter.format(time)
     }
 

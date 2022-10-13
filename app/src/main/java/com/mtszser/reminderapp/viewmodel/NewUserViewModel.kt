@@ -19,7 +19,7 @@ class NewUserViewModel @Inject constructor(private val repo: UserRepository): Vi
 
     init {
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _state.postValue(StateOfUser.Loaded(
                 userList = repo.getAll(),
             ))
