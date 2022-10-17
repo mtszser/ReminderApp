@@ -37,6 +37,14 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
             _stateOfWater.value = StateOfWater.Loaded(
                 countWaterList = repo.getWaterReminder(),
             )
+//            try {
+//                _position.value = repo.getContainerPos()
+//                _stateOfWater.value = StateOfWater.Loaded(
+//                    countWaterList = repo.getWaterReminder(),
+//                )
+//            } catch (e: Exception) {
+//                _stateOfWater.postValue(StateOfWater.Error)
+//            }
             _stateOfWater.value = StateOfWater.Loaded2(
                 userProfile = repo.getAll()
             )
@@ -70,6 +78,7 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
             countWaterList = repo.getWaterReminder(),
         )
     }
+
 
     fun saveSpinnerPos(spinnerPos: Int) = viewModelScope.launch(Dispatchers.IO){
         repo.saveSpinnerPos(spinnerPos)
@@ -106,7 +115,7 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
 
 
     fun addWater(drunkWater: Int) = viewModelScope.launch(Dispatchers.IO) {
-        repo.updateWater(drunkWater)
+        repo.addWater(drunkWater)
         _stateOfWater.postValue(StateOfWater.Loaded(
             alreadyDrank = repo.getWaterReminder().alreadyDrank,
             waterContainer = repo.getWaterReminder().waterContainer,
@@ -115,15 +124,24 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
 
     }
 
+    fun deleteWater(drunkWater: Int) = viewModelScope.launch(Dispatchers.IO) {
+        repo.deleteWater(drunkWater)
+        _stateOfWater.postValue((StateOfWater.Loaded(
+            alreadyDrank = repo.getWaterReminder().alreadyDrank,
+            waterContainer = repo.getWaterReminder().waterContainer,
+            countWaterList = repo.getWaterReminder()
+        )))
+    }
+
 
 
 
     sealed class StateOfWater{
         data class Loaded(
-            val alreadyDrank: Int = 0,
+            val alreadyDrank: Int = Integer.MIN_VALUE + 0,
             val waterContainer: Int = 0,
             val currentDate: String = "",
-            val countWaterList: WaterReminder? = WaterReminder(0, waterContainer = waterContainer, alreadyDrank = alreadyDrank, currentDate = currentDate ),
+            val countWaterList: WaterReminder? = WaterReminder(0, waterContainer = waterContainer, alreadyDrank = alreadyDrank, currentDate = currentDate),
         ): StateOfWater()
         data class Loaded2(
             val userProfile: List<UserProfile>? = listOf(),

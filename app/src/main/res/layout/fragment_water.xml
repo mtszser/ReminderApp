@@ -5,36 +5,36 @@
     android:id="@+id/waterMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FBF7F7"
+    android:background="@color/theme_color"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".view.WaterFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="15dp"
         android:orientation="vertical"
-        android:gravity="center"
-        android:layout_marginBottom="30dp">
+        android:gravity="top">
 
         <TextView
             android:id="@+id/textView"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Aktualnie wypiłeś:"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Today's Goal:"
+            android:textSize="24sp" />
 
 
         <RelativeLayout
             android:id="@+id/waterLayout"
-            android:layout_width="350dp"
+            android:minHeight="400dp"
+            android:layout_width="match_parent"
             android:layout_height="400dp"
             android:orientation="vertical">
 
@@ -43,7 +43,9 @@
                 style="@style/CircularProgressBar"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
-                android:layout_centerInParent="true">
+                android:layout_centerInParent="true"
+                android:minWidth="250dp"
+                android:minHeight="250dp">
 
             </ProgressBar>
 
@@ -58,34 +60,54 @@
                 android:layout_marginBottom="10dp"
                 android:autoSizeMaxTextSize="28sp"
                 android:autoSizeMinTextSize="20sp"
-                android:text="4000 / 4000ml"
+                android:text="4000/4000ml"
                 android:textColor="@color/black"
                 android:textSize="28sp" />
 
             <ImageButton
                 android:id="@+id/addWaterButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_marginBottom="50dp"
-                android:background="@drawable/ic_plus_add_svgrepo_com" />
+                android:layout_marginBottom="80dp"
+                android:background="@drawable/ic_plus_add_svgrepo_com"
+                android:minWidth="25dp"
+                android:minHeight="25dp" />
 
 
             <ImageButton
                 android:id="@+id/waterClearButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_alignParentBottom="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_marginBottom="50dp"
-                android:background="@drawable/ic_undo_svgrepo_com">
+                android:background="@drawable/ic_undo_svgrepo_com"
+                android:minWidth="25dp"
+                android:minHeight="25dp">
+            </ImageButton>
+
+            <ImageButton
+                android:id="@+id/waterDeleteButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="80dp"
+                android:background="@drawable/ic_minus_"
+                android:minWidth="25dp"
+                android:minHeight="25dp">
 
             </ImageButton>
+
 
             <Spinner
                 android:id="@+id/changeContainer"
@@ -94,14 +116,31 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:spinnerMode="dialog">
+                android:spinnerMode="dialog" />
 
-            </Spinner>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="60dp"
+                android:text="Click below to change capacity"
+                android:textSize="13sp">
+
+            </TextView>
             </RelativeLayout>
-    </LinearLayout>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Add activity"
+            android:layout_marginTop="20dp">
+
+        </Button>
+
+
+        </LinearLayout>
 </LinearLayout>
 

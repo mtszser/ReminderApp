@@ -12,6 +12,7 @@ import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.ActivityLoginBinding
 import com.mtszser.reminderapp.model.ActionReminder
 import com.mtszser.reminderapp.model.UserProfile
+import com.mtszser.reminderapp.model.WaterContainers
 import com.mtszser.reminderapp.model.WaterReminder
 import com.mtszser.reminderapp.viewmodel.NewUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                             val currentDate = userViewModel.getDate()
                             val waterList = WaterReminder(0, waterContainer = waterIntake, 0, currentDate)
                             val actionReminder = ActionReminder(0, "dupa", "dupa")
-                            val userProfile = UserProfile(0, firstName = name, weight = weight, height = height,0 , waterList, actionReminder)
+                            val userProfile = UserProfile(0, firstName = name, weight = weight, height = height, 0, waterList, actionReminder)
                             userViewModel.insert(userProfile)
                         }
                     } else {

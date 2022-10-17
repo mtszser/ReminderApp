@@ -41,7 +41,11 @@ interface UserDao {
     suspend fun getActionReminder(): ActionReminder
 
     @Query("Update user_table set alreadyDrank = alreadyDrank + :drunkWater")
-    suspend fun updateWater(drunkWater: Int)
+    suspend fun addWater(drunkWater: Int)
+
+    @Query("Update user_table set alreadyDrank = alreadyDrank - :drunkWater")
+    suspend fun deleteWater(drunkWater: Int)
+
 
     @Query("Update user_table set alreadyDrank = 0")
     suspend fun resetWater()
