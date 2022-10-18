@@ -8,6 +8,8 @@
     <string name="other">Other</string>
     <string name="save">SAVE</string>
     <string name="name">Name</string>
+    <string name="add_new_activity">Add New Activity</string>
+    <string name="add_activity_to_calculate_your_water_consumption">add activity to calculate your water consumption</string>
     <string-array name="water_containers">
         <item>100ml</item>
         <item>250ml</item>

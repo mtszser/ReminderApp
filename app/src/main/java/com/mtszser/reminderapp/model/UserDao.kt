@@ -32,13 +32,14 @@ interface UserDao {
     @Query("Select currentDate from user_table")
     suspend fun getProfileDate(): String
 
+    @Query("Update user_table set waterContainer = waterContainer + :exerciseWaterIntake")
+    suspend fun addToWaterContainer(exerciseWaterIntake: Int)
+
 
 
 
     // Action Reminder Table INTERFACE
 
-    @Query("Select actionId, actionDesc, actionName from user_table ")
-    suspend fun getActionReminder(): ActionReminder
 
     @Query("Update user_table set alreadyDrank = alreadyDrank + :drunkWater")
     suspend fun addWater(drunkWater: Int)
@@ -58,5 +59,11 @@ interface UserDao {
 
     @Query("Select containerId from user_table")
     suspend fun getContainerPos(): Int
+
+    @Query("Select * from exercise_table")
+    suspend fun getExercises(): List<ExerciseBase>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertExercise(exerciseBase: ExerciseBase)
 
 }

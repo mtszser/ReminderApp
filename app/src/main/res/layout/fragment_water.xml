@@ -22,27 +22,24 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:text="Today's Goal:"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
 
         <RelativeLayout
             android:id="@+id/waterLayout"
             android:minHeight="400dp"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="350dp"
             android:orientation="vertical">
 
             <ProgressBar
                 android:id="@+id/waterProgressBar"
                 style="@style/CircularProgressBar"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
                 android:layout_centerInParent="true"
                 android:minWidth="250dp"
                 android:minHeight="250dp">
@@ -58,11 +55,11 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:autoSizeMaxTextSize="28sp"
+                android:autoSizeMaxTextSize="25sp"
                 android:autoSizeMinTextSize="20sp"
                 android:text="4000/4000ml"
                 android:textColor="@color/black"
-                android:textSize="28sp" />
+                android:textSize="25sp" />
 
             <ImageButton
                 android:id="@+id/addWaterButton"
@@ -125,20 +122,36 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerInParent="true"
-                android:layout_marginBottom="60dp"
+                android:layout_marginBottom="55dp"
                 android:text="Click below to change capacity"
-                android:textSize="13sp">
+                android:textSize="10sp">
 
             </TextView>
             </RelativeLayout>
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Add activity"
-            android:layout_marginTop="20dp">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <Button
+                android:id="@+id/addActivityButton"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="Add activity"
+                android:layout_margin="10dp">
+            </Button>
+            <Button
+                android:id="@+id/setAlarmButton"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:text="Set new alarm">
 
-        </Button>
+            </Button>
+
+        </LinearLayout>
+
 
 
         </LinearLayout>

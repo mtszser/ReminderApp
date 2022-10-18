@@ -1,11 +1,9 @@
 package com.mtszser.reminderapp.view
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.DialogInterface
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.media.metrics.Event
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,8 +16,8 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.FragmentWaterBinding
+import com.mtszser.reminderapp.model.ExerciseBase
 import com.mtszser.reminderapp.model.WaterContainers
 import com.mtszser.reminderapp.viewmodel.WaterViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +29,7 @@ class WaterFragment : Fragment() {
     private lateinit var mySpinner: Spinner
     private lateinit var adapter: ArrayAdapter<WaterContainers>
     private lateinit var binding: FragmentWaterBinding
+    private lateinit var mediaPlayer: MediaPlayer
     private val waterModel: WaterViewModel by viewModels()
 
     override fun onCreateView(
@@ -47,9 +46,27 @@ class WaterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getMediaPlayer()
         startWater()
         getSpinnerData()
+        addExercise()
 
+    }
+
+    private fun addExercise() {
+        binding.addActivityButton.setOnClickListener {
+            val dialog = NewActivityDialog()
+            dialog.show(childFragmentManager, "New Activity")
+
+        }
+
+    }
+
+    private fun getMediaPlayer() {
+        val filename = "android.resource://" + requireContext().packageName + "/raw/bubbles"
+        mediaPlayer = MediaPlayer()
+        mediaPlayer.setDataSource(requireContext(), Uri.parse(filename))
+        mediaPlayer.prepare()
     }
 
     private fun getSpinnerData() {
@@ -66,12 +83,13 @@ class WaterFragment : Fragment() {
                 waterModel.updateSpinnerPosition(position)
                 waterModel.saveSpinnerPos(position)
                 when(position) {
-                    0 -> addOrDeleteWater(200)
-                    1 -> addOrDeleteWater(250)
-                    2 -> addOrDeleteWater(330)
-                    3 -> addOrDeleteWater(500)
-                    4 -> addOrDeleteWater(750)
-                    5 -> addOrDeleteWater(1000)
+                    0 -> addOrDeleteWater(20)
+                    1 -> addOrDeleteWater(200)
+                    2 -> addOrDeleteWater(250)
+                    3 -> addOrDeleteWater(330)
+                    4 -> addOrDeleteWater(500)
+                    5 -> addOrDeleteWater(750)
+                    6 -> addOrDeleteWater(1000)
                 }
 
             }
@@ -86,6 +104,8 @@ class WaterFragment : Fragment() {
     private fun addOrDeleteWater(i: Int) {
         binding.addWaterButton.setOnClickListener{
             waterModel.addWater(i)
+            mediaPlayer.start()
+
         }
         binding.waterDeleteButton.setOnClickListener{
             waterModel.deleteWater(i)
@@ -155,6 +175,7 @@ class WaterFragment : Fragment() {
         }
         Log.d("progress" , "${progressBar.progress}")
     }
+
 
 }
 

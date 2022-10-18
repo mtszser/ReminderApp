@@ -45,4 +45,12 @@
         <!-- Setting up enter and exit transition. -->
     </style>
 
+    <style name="FullScreenDialog" parent="Theme.ReminderApp">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.7</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
 </resources>

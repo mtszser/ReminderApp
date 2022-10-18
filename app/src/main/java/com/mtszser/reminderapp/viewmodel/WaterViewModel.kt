@@ -3,9 +3,7 @@ package com.mtszser.reminderapp.viewmodel
 
 
 import androidx.lifecycle.*
-import com.mtszser.reminderapp.model.UserProfile
-import com.mtszser.reminderapp.model.WaterContainers
-import com.mtszser.reminderapp.model.WaterReminder
+import com.mtszser.reminderapp.model.*
 import com.mtszser.reminderapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -56,6 +54,14 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
         return repo.insertSpinnerData()
     }
 
+    fun getExerciseAC(): ArrayList<String> {
+        return repo.insertAutoCompletedText()
+    }
+
+    fun insertExercise(exerciseBase: ExerciseBase) = viewModelScope.launch(Dispatchers.IO) {
+        repo.insertExercises(exerciseBase)
+    }
+
     fun updateSpinnerPosition(position: Int) = viewModelScope.launch() {
         _position.value = position
     }
@@ -69,6 +75,11 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
         _stateOfWater.value = StateOfWater.Loaded(
             alreadyDrank = 0,
         )
+        updateWater()
+    }
+
+    fun addToWaterContainer(exerciseWaterIntake: Int) = viewModelScope.launch(){
+        repo.addToWaterContainer(exerciseWaterIntake)
         updateWater()
     }
 
@@ -109,6 +120,10 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
 
     private fun updateDate(currentDate: String) = viewModelScope.launch(Dispatchers.IO) {
         repo.updateDate(currentDate)
+    }
+
+    fun countWaterDuringExercise(duration: Int, waterPerMinute: Int): Int {
+        return duration * waterPerMinute
     }
 
 
