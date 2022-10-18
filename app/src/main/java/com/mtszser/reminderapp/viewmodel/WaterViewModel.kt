@@ -74,6 +74,8 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
         repo.resetWater()
         _stateOfWater.value = StateOfWater.Loaded(
             alreadyDrank = 0,
+            bonusWaterContainer = 0,
+
         )
         updateWater()
     }
@@ -117,6 +119,10 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
 
     }
 
+    fun countNewWaterContainer(waterContainer: Int, bonusWaterContainer: Int): Int {
+        return waterContainer + bonusWaterContainer
+    }
+
 
     private fun updateDate(currentDate: String) = viewModelScope.launch(Dispatchers.IO) {
         repo.updateDate(currentDate)
@@ -155,8 +161,10 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
         data class Loaded(
             val alreadyDrank: Int = Integer.MIN_VALUE + 0,
             val waterContainer: Int = 0,
+            val bonusWaterContainer: Int = 0,
             val currentDate: String = "",
-            val countWaterList: WaterReminder? = WaterReminder(0, waterContainer = waterContainer, alreadyDrank = alreadyDrank, currentDate = currentDate),
+            val countWaterList: WaterReminder? = WaterReminder(0, waterContainer = waterContainer, alreadyDrank = alreadyDrank, currentDate = currentDate,
+            bonusWaterContainer = bonusWaterContainer),
         ): StateOfWater()
         data class Loaded2(
             val userProfile: List<UserProfile>? = listOf(),

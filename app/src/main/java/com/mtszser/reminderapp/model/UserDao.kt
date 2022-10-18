@@ -23,7 +23,7 @@ interface UserDao {
 
     // Water Reminder Table INTERFACE
 
-    @Query("Select waterContainer, waterId, alreadyDrank, currentDate from user_table ")
+    @Query("Select waterContainer, waterId, alreadyDrank, currentDate, bonusWaterContainer from user_table ")
     suspend fun getWaterReminder(): WaterReminder
 
     @Query("Update user_table set currentDate = :currentDay")
@@ -34,6 +34,7 @@ interface UserDao {
 
     @Query("Update user_table set waterContainer = waterContainer + :exerciseWaterIntake")
     suspend fun addToWaterContainer(exerciseWaterIntake: Int)
+
 
 
 

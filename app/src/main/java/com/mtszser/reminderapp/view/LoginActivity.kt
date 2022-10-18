@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
                             // zmienna z policzoną ilością wody do spożycia
                             val waterIntake = userViewModel.countWater(weight = weight)
                             val currentDate = userViewModel.getDate()
-                            val waterList = WaterReminder(0, waterContainer = waterIntake, 0, currentDate)
+                            val waterList = WaterReminder(0, waterContainer = waterIntake, 0, 0, currentDate)
                             val userProfile = UserProfile(0, firstName = name, weight = weight, height = height, 0, waterList)
                             userViewModel.insert(userProfile)
                         }

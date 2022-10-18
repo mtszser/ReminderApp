@@ -17,6 +17,7 @@ data class UserProfile(
 data class WaterReminder(
     @PrimaryKey(autoGenerate = true) val waterId: Int,
     val waterContainer: Int,
+    val bonusWaterContainer: Int,
     val alreadyDrank: Int,
     val currentDate: String,
 )

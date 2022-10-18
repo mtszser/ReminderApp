@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.DialogActivityInputBinding
@@ -84,11 +86,9 @@ class NewActivityDialog: DialogFragment() {
 
     private fun saveActivity(waterPerMinute: Int, duration: Int) {
         val waterIntake = waterViewModel.countWaterDuringExercise(duration, waterPerMinute)
-        waterViewModel.addToWaterContainer(waterIntake)
+        setFragmentResult("activityResult", bundleOf("waterIntake" to waterIntake))
         dismiss()
+        }
+
     }
 
-
-
-
-}

@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.mtszser.reminderapp.databinding.FragmentWaterBinding
 import com.mtszser.reminderapp.model.ExerciseBase
@@ -50,8 +51,21 @@ class WaterFragment : Fragment() {
         startWater()
         getSpinnerData()
         addExercise()
+        getResultFromDialog()
 
     }
+
+    private fun getResultFromDialog() {
+        childFragmentManager.setFragmentResultListener("activityResult", viewLifecycleOwner) {key, bundle ->
+            val result = bundle.getInt("waterIntake")
+            if (result.equals(null)) {
+                Log.d("bundle", "nic tutaj niema!")
+            } else {
+                waterModel.addToWaterContainer(result)
+            }
+        }
+    }
+
 
     private fun addExercise() {
         binding.addActivityButton.setOnClickListener {
@@ -127,7 +141,7 @@ class WaterFragment : Fragment() {
                         } else {
                             binding.waterContainer.text = it.countWaterList.alreadyDrank.toString() +
                                     " / " + it.countWaterList.waterContainer.toString() + "ml"
-                            setProgressBar(it.countWaterList.waterContainer, it.countWaterList.alreadyDrank)
+                            setProgressBar(it.countWaterList.waterContainer, it.countWaterList.alreadyDrank, it.countWaterList.bonusWaterContainer)
                         }
                         if(it.countWaterList.alreadyDrank > 0) {
                             binding.waterDeleteButton.visibility = View.VISIBLE
@@ -147,12 +161,12 @@ class WaterFragment : Fragment() {
             }
         }
     }
-    private fun setProgressBar(waterContainer: Int?, alreadyDrank: Int?) {
+    private fun setProgressBar(waterContainer: Int?, alreadyDrank: Int?, bonusWaterContainer: Int?) {
         Log.d("progress bar" , "$alreadyDrank")
         val progressBar = binding.waterProgressBar
         progressBar.min = 0
-        if (waterContainer != null && alreadyDrank != null) {
-            progressBar.max = waterContainer
+        if (waterContainer != null && alreadyDrank != null && bonusWaterContainer != null) {
+            progressBar.max = waterModel.countNewWaterContainer(waterContainer, bonusWaterContainer)
             progressBar.progress = alreadyDrank
         }
         binding.waterClearButton.setOnClickListener{
