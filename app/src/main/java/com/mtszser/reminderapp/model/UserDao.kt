@@ -1,8 +1,6 @@
 package com.mtszser.reminderapp.model
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import java.util.*
 
 @Dao
 interface UserDao {
@@ -32,9 +30,11 @@ interface UserDao {
     @Query("Select currentDate from user_table")
     suspend fun getProfileDate(): String
 
-    @Query("Update user_table set waterContainer = waterContainer + :exerciseWaterIntake")
-    suspend fun addToWaterContainer(exerciseWaterIntake: Int)
+    @Query("Update user_table set bonusWaterContainer = bonusWaterContainer + :exerciseWaterIntake")
+    suspend fun addToBonusWaterContainer(exerciseWaterIntake: Int)
 
+    @Query("Select * from exercise_table")
+    suspend fun getActivityList(): List<ExerciseBase>
 
 
 
@@ -48,9 +48,13 @@ interface UserDao {
     @Query("Update user_table set alreadyDrank = alreadyDrank - :drunkWater")
     suspend fun deleteWater(drunkWater: Int)
 
+    @Query("Update user_table set alreadyDrank = 0, bonusWaterContainer = 0")
+    suspend fun resetWater()
 
     @Query("Update user_table set alreadyDrank = 0")
-    suspend fun resetWater()
+    suspend fun resetDrankWater()
+
+
 
 //    @Query("Select actionReminder from user_table")
 //    suspend fun getActionReminder(): List<ActionReminder>
@@ -61,10 +65,7 @@ interface UserDao {
     @Query("Select containerId from user_table")
     suspend fun getContainerPos(): Int
 
-    @Query("Select * from exercise_table")
-    suspend fun getExercises(): List<ExerciseBase>
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertExercise(exerciseBase: ExerciseBase)
 
 }
+
+

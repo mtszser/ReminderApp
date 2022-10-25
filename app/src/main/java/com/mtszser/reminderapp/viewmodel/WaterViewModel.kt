@@ -4,6 +4,8 @@ package com.mtszser.reminderapp.viewmodel
 
 import androidx.lifecycle.*
 import com.mtszser.reminderapp.model.*
+import com.mtszser.reminderapp.repository.ActivityRepository
+import com.mtszser.reminderapp.repository.DrankWaterRepository
 import com.mtszser.reminderapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +20,7 @@ import kotlin.collections.ArrayList
 
 
 @HiltViewModel
-class WaterViewModel @Inject constructor(private val repo: UserRepository): ViewModel() {
+class WaterViewModel @Inject constructor(private val repo: UserRepository, private val activityRepo: ActivityRepository, private val waterRepo: DrankWaterRepository): ViewModel() {
 
     private val _currentDate = MutableLiveData<String>()
     val currentDate = _currentDate as LiveData<String>
@@ -34,6 +36,8 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
             _position.value = repo.getContainerPos()
             _stateOfWater.value = StateOfWater.Loaded(
                 countWaterList = repo.getWaterReminder(),
+                activityList = activityRepo.getAllActivities(),
+                listOfWaterContainers = waterRepo.getAllWater()
             )
 //            try {
 //                _position.value = repo.getContainerPos()
@@ -50,8 +54,9 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
 
     }
 
-    fun updateSpinner(): ArrayList<WaterContainers> {
-        return repo.insertSpinnerData()
+
+    fun updateSpinner(): ArrayList<DrankWaterBase> {
+        return waterRepo.insertSpinnerData()
     }
 
     fun getExerciseAC(): ArrayList<String> {
@@ -59,7 +64,11 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
     }
 
     fun insertExercise(exerciseBase: ExerciseBase) = viewModelScope.launch(Dispatchers.IO) {
-        repo.insertExercises(exerciseBase)
+       activityRepo.insertExercises(exerciseBase)
+        _stateOfWater.postValue(StateOfWater.Loaded(
+            activityList = activityRepo.getAllActivities(),
+            alreadyDrank = repo.getWaterReminder().alreadyDrank
+        ))
     }
 
     fun updateSpinnerPosition(position: Int) = viewModelScope.launch() {
@@ -75,20 +84,29 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
         _stateOfWater.value = StateOfWater.Loaded(
             alreadyDrank = 0,
             bonusWaterContainer = 0,
+            countWaterList = repo.getWaterReminder()
 
         )
         updateWater()
     }
 
-    fun addToWaterContainer(exerciseWaterIntake: Int) = viewModelScope.launch(){
-        repo.addToWaterContainer(exerciseWaterIntake)
-        updateWater()
+
+    fun addToBonusWaterContainer(exerciseWaterIntake: Int) = viewModelScope.launch(){
+        repo.addToBonusWaterContainer(exerciseWaterIntake)
+        _stateOfWater.postValue(StateOfWater.Loaded(
+            bonusWaterContainer = repo.getWaterReminder().bonusWaterContainer,
+            alreadyDrank = repo.getWaterReminder().alreadyDrank,
+            countWaterList = repo.getWaterReminder(),
+            waterContainer = repo.getWaterReminder().waterContainer + repo.getWaterReminder().bonusWaterContainer,
+
+        ))
     }
 
 
     fun updateWater() = viewModelScope.launch() {
         _stateOfWater.value = StateOfWater.Loaded(
             countWaterList = repo.getWaterReminder(),
+            listOfWaterContainers = waterRepo.getAllWater()
         )
     }
 
@@ -119,9 +137,6 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
 
     }
 
-    fun countNewWaterContainer(waterContainer: Int, bonusWaterContainer: Int): Int {
-        return waterContainer + bonusWaterContainer
-    }
 
 
     private fun updateDate(currentDate: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -132,16 +147,22 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
         return duration * waterPerMinute
     }
 
+    fun countEntireWaterContainer(waterContainer: Int, bonusWaterContainer: Int): Int {
+        return waterContainer + bonusWaterContainer
+    }
 
 
 
-    fun addWater(drunkWater: Int) = viewModelScope.launch(Dispatchers.IO) {
+
+    fun addWater(drunkWater: Int, containers: DrankWaterBase) = viewModelScope.launch(Dispatchers.IO) {
         repo.addWater(drunkWater)
+        waterRepo.insertWaterContainer(containers)
         _stateOfWater.postValue(StateOfWater.Loaded(
             alreadyDrank = repo.getWaterReminder().alreadyDrank,
             waterContainer = repo.getWaterReminder().waterContainer,
-            countWaterList = repo.getWaterReminder())
-        )
+            countWaterList = repo.getWaterReminder(),
+            listOfWaterContainers = waterRepo.getAllWater()
+        ))
 
     }
 
@@ -150,8 +171,17 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
         _stateOfWater.postValue((StateOfWater.Loaded(
             alreadyDrank = repo.getWaterReminder().alreadyDrank,
             waterContainer = repo.getWaterReminder().waterContainer,
-            countWaterList = repo.getWaterReminder()
+            countWaterList = repo.getWaterReminder(),
+            listOfWaterContainers = waterRepo.getAllWater()
         )))
+    }
+
+    fun resetDrankWater() = viewModelScope.launch(Dispatchers.IO) {
+        repo.resetDrankWater()
+        _stateOfWater.postValue(StateOfWater.Loaded(
+            alreadyDrank = 0,
+            waterContainer = repo.getWaterReminder().waterContainer + repo.getWaterReminder().bonusWaterContainer
+        ))
     }
 
 
@@ -163,6 +193,8 @@ class WaterViewModel @Inject constructor(private val repo: UserRepository): View
             val waterContainer: Int = 0,
             val bonusWaterContainer: Int = 0,
             val currentDate: String = "",
+            val listOfWaterContainers: List<DrankWaterBase> = listOf(),
+            val activityList: List<ExerciseBase> = listOf(),
             val countWaterList: WaterReminder? = WaterReminder(0, waterContainer = waterContainer, alreadyDrank = alreadyDrank, currentDate = currentDate,
             bonusWaterContainer = bonusWaterContainer),
         ): StateOfWater()

@@ -17,7 +17,9 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mtszser.reminderapp.databinding.FragmentWaterBinding
+import com.mtszser.reminderapp.model.DrankWaterBase
 import com.mtszser.reminderapp.model.ExerciseBase
 import com.mtszser.reminderapp.model.WaterContainers
 import com.mtszser.reminderapp.viewmodel.WaterViewModel
@@ -28,7 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class WaterFragment : Fragment() {
 
     private lateinit var mySpinner: Spinner
-    private lateinit var adapter: ArrayAdapter<WaterContainers>
+    private lateinit var adapter: ArrayAdapter<DrankWaterBase>
     private lateinit var binding: FragmentWaterBinding
     private lateinit var mediaPlayer: MediaPlayer
     private val waterModel: WaterViewModel by viewModels()
@@ -55,13 +57,26 @@ class WaterFragment : Fragment() {
 
     }
 
+    private fun getRVList(waterContainerList: List<DrankWaterBase>) {
+        Log.d("Lista drankwaterBase", "$waterContainerList")
+        val recyclerView = binding.waterRecyclerView
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = ContRVAdapter(waterContainerList)
+
+        }
+    }
+
     private fun getResultFromDialog() {
         childFragmentManager.setFragmentResultListener("activityResult", viewLifecycleOwner) {key, bundle ->
             val result = bundle.getInt("waterIntake")
+            val selectedItem = bundle.getString("selectedItem").toString()
+            val exerciseBase = ExerciseBase(0, selectedItem, result)
             if (result.equals(null)) {
                 Log.d("bundle", "nic tutaj niema!")
             } else {
-                waterModel.addToWaterContainer(result)
+                waterModel.insertExercise(exerciseBase)
+                waterModel.addToBonusWaterContainer(result)
             }
         }
     }
@@ -97,13 +112,13 @@ class WaterFragment : Fragment() {
                 waterModel.updateSpinnerPosition(position)
                 waterModel.saveSpinnerPos(position)
                 when(position) {
-                    0 -> addOrDeleteWater(20)
-                    1 -> addOrDeleteWater(200)
-                    2 -> addOrDeleteWater(250)
-                    3 -> addOrDeleteWater(330)
-                    4 -> addOrDeleteWater(500)
-                    5 -> addOrDeleteWater(750)
-                    6 -> addOrDeleteWater(1000)
+                    0 -> addOrDeleteWater(20, 0)
+                    1 -> addOrDeleteWater(200, 1)
+                    2 -> addOrDeleteWater(250, 2)
+                    3 -> addOrDeleteWater(330, 3)
+                    4 -> addOrDeleteWater(500, 4)
+                    5 -> addOrDeleteWater(750, 5)
+                    6 -> addOrDeleteWater(1000, 6)
                 }
 
             }
@@ -115,9 +130,11 @@ class WaterFragment : Fragment() {
     }
 
 
-    private fun addOrDeleteWater(i: Int) {
+    private fun addOrDeleteWater(i: Int, myPosition: Int) {
+        val container = mySpinner.getItemAtPosition(myPosition)
+        Log.d("container", "$container")
         binding.addWaterButton.setOnClickListener{
-            waterModel.addWater(i)
+            waterModel.addWater(i, container as DrankWaterBase)
             mediaPlayer.start()
 
         }
@@ -136,12 +153,18 @@ class WaterFragment : Fragment() {
                 is WaterViewModel.StateOfWater.Loaded -> {
                     if (listOf(it.countWaterList).isNotEmpty()) {
                         if (it.countWaterList?.alreadyDrank!! < 0) {
-                            waterModel.resetCap()
+                            waterModel.resetDrankWater()
                             binding.waterDeleteButton.visibility = View.GONE
                         } else {
+                            val waterContainer = waterModel.countEntireWaterContainer(it.countWaterList.waterContainer, it.countWaterList.bonusWaterContainer)
                             binding.waterContainer.text = it.countWaterList.alreadyDrank.toString() +
-                                    " / " + it.countWaterList.waterContainer.toString() + "ml"
-                            setProgressBar(it.countWaterList.waterContainer, it.countWaterList.alreadyDrank, it.countWaterList.bonusWaterContainer)
+                                    " / " + waterContainer.toString() + "ml"
+                            setProgressBar(waterContainer, it.countWaterList.alreadyDrank)
+                            if(it.listOfWaterContainers.isNotEmpty()) {
+                                getRVList(it.listOfWaterContainers)
+                            } else {
+                                Log.d("Water Containers", "It's empty")
+                            }
                         }
                         if(it.countWaterList.alreadyDrank > 0) {
                             binding.waterDeleteButton.visibility = View.VISIBLE
@@ -161,18 +184,15 @@ class WaterFragment : Fragment() {
             }
         }
     }
-    private fun setProgressBar(waterContainer: Int?, alreadyDrank: Int?, bonusWaterContainer: Int?) {
+    private fun setProgressBar(waterContainer: Int?, alreadyDrank: Int?) {
         Log.d("progress bar" , "$alreadyDrank")
         val progressBar = binding.waterProgressBar
         progressBar.min = 0
-        if (waterContainer != null && alreadyDrank != null && bonusWaterContainer != null) {
-            progressBar.max = waterModel.countNewWaterContainer(waterContainer, bonusWaterContainer)
+        if (waterContainer != null && alreadyDrank != null) {
+            progressBar.max = waterContainer
             progressBar.progress = alreadyDrank
         }
         binding.waterClearButton.setOnClickListener{
-            if (alreadyDrank == 0){
-                Toast.makeText(context, "You can't reset 0 dummy :)", Toast.LENGTH_SHORT).show()
-            } else {
                 val builder = AlertDialog.Builder(activity)
                 builder.setTitle("Confirm Reset")
                 builder.setMessage("Are you sure you want to reset your water consumption?")
@@ -185,7 +205,6 @@ class WaterFragment : Fragment() {
                 })
                 val alert = builder.create()
                 alert.show()
-            }
         }
         Log.d("progress" , "${progressBar.progress}")
     }

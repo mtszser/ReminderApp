@@ -7,8 +7,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.mtszser.reminderapp.databinding.ActivityLoginBinding
-import com.mtszser.reminderapp.model.UserProfile
-import com.mtszser.reminderapp.model.WaterReminder
+import com.mtszser.reminderapp.model.*
 import com.mtszser.reminderapp.viewmodel.NewUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,8 +46,9 @@ class LoginActivity : AppCompatActivity() {
                             // zmienna z policzoną ilością wody do spożycia
                             val waterIntake = userViewModel.countWater(weight = weight)
                             val currentDate = userViewModel.getDate()
+                            val drankWater = DrankWaterBase(0, 0, 0)
                             val waterList = WaterReminder(0, waterContainer = waterIntake, 0, 0, currentDate)
-                            val userProfile = UserProfile(0, firstName = name, weight = weight, height = height, 0, waterList)
+                            val userProfile = UserProfile(0, firstName = name, weight = weight, height = height, 0, waterList, drankWater)
                             userViewModel.insert(userProfile)
                         }
                     } else {

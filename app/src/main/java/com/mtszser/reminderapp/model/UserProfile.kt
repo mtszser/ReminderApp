@@ -13,6 +13,7 @@ data class UserProfile(
     @ColumnInfo(name = "height") val height: String?,
     @ColumnInfo(name = "containerId") val containerID: Int?,
     @Embedded val waterReminder: WaterReminder?,
+    @Embedded val drankWaterBase: DrankWaterBase,
 )
 data class WaterReminder(
     @PrimaryKey(autoGenerate = true) val waterId: Int,

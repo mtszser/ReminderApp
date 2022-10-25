@@ -8,10 +8,13 @@ import androidx.room.RoomDatabase
 @Database(entities = [
     UserProfile::class,
     ExerciseBase::class,
-    ActionReminder::class], version = 1, exportSchema = false)
+    ActionReminder::class,
+    DrankWaterBase::class,], version = 1, exportSchema = false)
 abstract class UserDatabase: RoomDatabase()  {
 
     abstract fun userDao(): UserDao
+    abstract fun activityDao(): ActivityDao
+    abstract fun drankWaterDao(): DrankWaterDao
 
     companion object {
         @Volatile

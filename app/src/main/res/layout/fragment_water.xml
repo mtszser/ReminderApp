@@ -149,8 +149,17 @@
                 android:text="Set new alarm">
 
             </Button>
-
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/waterRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_height="110dp"
+            android:scrollbars="vertical"
+            android:scrollbarFadeDuration="500"
+            tools:listitem="@layout/water_rv_item">
+        </androidx.recyclerview.widget.RecyclerView>
 
 
 

@@ -3,9 +3,6 @@ package com.mtszser.reminderapp.repository
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.model.*
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -28,6 +25,10 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
         return userDao.getAll()
     }
 
+//    suspend fun getAllActivities(): List<ExerciseBase>{
+//        return userDao.getActivityList()
+//    }
+
     // Water Repo Functions
 
     suspend fun getWaterReminder(): WaterReminder{
@@ -46,8 +47,13 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
         userDao.resetWater()
     }
 
-    suspend fun addToWaterContainer(exerciseWaterIntake: Int) {
-        userDao.addToWaterContainer(exerciseWaterIntake)
+    suspend fun resetDrankWater(){
+        userDao.resetDrankWater()
+    }
+
+
+    suspend fun addToBonusWaterContainer(exerciseWaterIntake: Int) {
+        userDao.addToBonusWaterContainer(exerciseWaterIntake)
     }
 
     // Action Repo Functions
@@ -56,19 +62,6 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
 //        return userDao.getActionReminder()
 //    }
 
-    fun insertSpinnerData(): ArrayList<WaterContainers> {
-        val containers = ArrayList<WaterContainers>()
-        containers.apply {
-            add(WaterContainers("0", "20", R.drawable.ic_soft_drink_straw_20ml))
-            add(WaterContainers("1", "200", R.drawable.ic_glass_of_water_200ml))
-            add(WaterContainers("2", "250", R.drawable.ic_glass_of_water_250ml))
-            add(WaterContainers("3", "330", R.drawable.ic_can_soda_330ml))
-            add(WaterContainers("4", "500", R.drawable.ic_water_bottle))
-            add(WaterContainers("5", "750", R.drawable.ic_water_bottle_750ml))
-            add(WaterContainers("6", "1000", R.drawable.ic_water_bottle_1l))
-        }
-        return containers
-    }
 
     fun insertAutoCompletedText(): ArrayList<String> {
         val autoCompletedArray = ArrayList<String>()
@@ -85,9 +78,6 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
             add(9, "Hot Day")
         }
         return autoCompletedArray
-    }
-    suspend fun insertExercises(exerciseBase: ExerciseBase){
-        userDao.insertExercise(exerciseBase)
     }
 
 

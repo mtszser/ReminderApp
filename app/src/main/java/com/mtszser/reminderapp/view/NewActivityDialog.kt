@@ -86,7 +86,7 @@ class NewActivityDialog: DialogFragment() {
 
     private fun saveActivity(waterPerMinute: Int, duration: Int) {
         val waterIntake = waterViewModel.countWaterDuringExercise(duration, waterPerMinute)
-        setFragmentResult("activityResult", bundleOf("waterIntake" to waterIntake))
+        setFragmentResult("activityResult", bundleOf("waterIntake" to waterIntake, "selectedItem" to selectedExercise))
         dismiss()
         }
 
