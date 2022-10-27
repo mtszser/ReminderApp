@@ -1,17 +1,19 @@
 package com.mtszser.reminderapp.model
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
 interface DrankWaterDao {
 
     @Query("Select * from water_table")
-    suspend fun getAllWater(): List<DrankWaterBase>
+    suspend fun getAddedWater(): List<DrankWaterBase>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     suspend fun insertWaterContainer(waterContainer: DrankWaterBase)
 
+    @Delete
+    suspend fun deleteAddedWater(drankWaterBase: DrankWaterBase)
 }

@@ -14,9 +14,9 @@ class ActivityAdapter: RecyclerView.Adapter<ActivityAdapter.ActivityViewHolder>(
 
     class ActivityViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        val contImg = itemView.findViewById<ImageView>(R.id.waterContImg)
-        val contCap = itemView.findViewById<TextView>(R.id.containerCap)
-        val onTime = itemView.findViewById<TextView>(R.id.waterContTime)
+        val contImg: ImageView = itemView.findViewById(R.id.waterContImg)
+        val contCap: TextView = itemView.findViewById(R.id.containerCap)
+        val onTime: TextView = itemView.findViewById(R.id.waterContTime)
 
     }
 

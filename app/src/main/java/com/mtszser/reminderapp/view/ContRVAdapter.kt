@@ -15,7 +15,6 @@ import javax.inject.Inject
 
 class ContRVAdapter @Inject constructor(
     private var drankWaterCards: List<DrankWaterBase>,
-//    private val onCardClick: (DrankWaterBase) -> Unit,
 
 ) : RecyclerView.Adapter<ContRVAdapter.ViewWaterHolder>() {
 
@@ -25,13 +24,7 @@ class ContRVAdapter @Inject constructor(
 
         private var binding = WaterRvItemBinding.bind(view)
 
-//        fun bindData(drankWaterItem: DrankWaterBase) {
-//            with(itemView) {
-//                val drankWaterImg = binding.waterContImg
-//                val drankWaterTime = binding.waterContTime
-//                val drankWaterCap = binding.waterContCap
-//            }
-//        }
+
         val drankWaterImg = binding.waterContImg
         val drankWaterCap = binding.waterContCap
         val drankWaterTime = binding.waterContTime
@@ -45,16 +38,11 @@ class ContRVAdapter @Inject constructor(
 
     override fun onBindViewHolder(holder: ViewWaterHolder, position: Int) {
         val drankWaterItem = drankWaterCards[position]
-        holder.drankWaterImg.setImageResource(drankWaterItem.waterContImg)
-        holder.drankWaterCap.text = drankWaterItem.waterContCap.toString() + "ml"
+        val mapDrankItem = drankWaterItem.mapDataClass()
+        holder.drankWaterCap.text = mapDrankItem.getCap()
+        holder.drankWaterImg.setImageResource(mapDrankItem.dwImg)
+        holder.drankWaterTime.text = mapDrankItem.dwDate
 
-        fun getDate(): String {
-            val time = Calendar.getInstance().time
-            val formatter = SimpleDateFormat("hh:mm a")
-            return formatter.format(time)
-        }
-
-        holder.drankWaterTime.text = getDate()
     }
 
     override fun getItemCount() = drankWaterCards.size

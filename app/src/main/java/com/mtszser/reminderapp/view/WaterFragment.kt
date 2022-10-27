@@ -33,6 +33,7 @@ class WaterFragment : Fragment() {
     private lateinit var adapter: ArrayAdapter<DrankWaterBase>
     private lateinit var binding: FragmentWaterBinding
     private lateinit var mediaPlayer: MediaPlayer
+    private var time: String = ""
     private val waterModel: WaterViewModel by viewModels()
 
     override fun onCreateView(
@@ -134,7 +135,8 @@ class WaterFragment : Fragment() {
         val container = mySpinner.getItemAtPosition(myPosition)
         Log.d("container", "$container")
         binding.addWaterButton.setOnClickListener{
-            waterModel.addWater(i, container as DrankWaterBase)
+            time = waterModel.getTime()
+            waterModel.addWater(i, container as DrankWaterBase, time)
             mediaPlayer.start()
 
         }
