@@ -11,9 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.model.DrankWaterBase
 import com.mtszser.reminderapp.model.WaterContainers
+import com.mtszser.reminderapp.util.Const
 
 
-class ContainerAdapter(context: Context, containers: List<DrankWaterBase>): ArrayAdapter<DrankWaterBase>(context, 0, containers) {
+class ContainerAdapter(context: Context): ArrayAdapter<DrankWaterBase>(context, 0, Const.insertSpinnerData()) {
 
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

@@ -2,14 +2,20 @@ package com.mtszser.reminderapp.viewmodel
 
 
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.mtszser.reminderapp.model.*
 import com.mtszser.reminderapp.repository.ActivityRepository
 import com.mtszser.reminderapp.repository.DrankWaterRepository
 import com.mtszser.reminderapp.repository.UserRepository
+import com.mtszser.reminderapp.view.NewActivityDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -20,200 +26,126 @@ import kotlin.collections.ArrayList
 
 
 @HiltViewModel
-class WaterViewModel @Inject constructor(private val repo: UserRepository, private val activityRepo: ActivityRepository, private val waterRepo: DrankWaterRepository): ViewModel() {
+class WaterViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+    private val activityRepository: ActivityRepository,
+    private val waterRepository: DrankWaterRepository
+    ): ViewModel() {
 
-    private val _currentDate = MutableLiveData<String>()
-    val currentDate = _currentDate as LiveData<String>
-    private val _position = MutableLiveData<Int>()
-    val position = _position as LiveData<Int>
-    private val _stateOfWater = MutableLiveData<StateOfWater>()
-    val stateOfWater = _stateOfWater as LiveData<StateOfWater>
+    private val _unitFlow = MutableSharedFlow<Unit>()
+    val unitFlow = _unitFlow as SharedFlow<Unit>
 
-
+    private val _waterState =  MutableLiveData(WaterStateData())
+    val waterState = _waterState as LiveData<WaterStateData>
 
     init {
+        loadDrankWaterList()
+    }
+
+
+    fun selectAmountOfWater(selectedAmountOfWater: DrankWaterBase) {
+        _waterState.value = _waterState.value?.copy(
+            selectedAmountOfWater = selectedAmountOfWater
+        )
+    }
+
+    private fun loadDrankWaterList() {
         viewModelScope.launch {
-            _position.value = repo.getContainerPos()
-            _stateOfWater.value = StateOfWater.Loaded(
-                countWaterList = repo.getWaterReminder(),
-                activityList = activityRepo.getAllActivities(),
-                listOfWaterContainers = waterRepo.getAddedWater()
+            val alreadyDrank = userRepository.getWaterReminder().alreadyDrank
+            val waterNeededPerDay = userRepository.getWaterReminder().waterContainer +
+                    userRepository.getWaterReminder().bonusWaterContainer
+
+
+            _waterState.value = waterState.value?.copy(
+                drankWaterList = waterRepository.getAddedWater().map { it.mapToView()},
+                drankWaterLabel = "$alreadyDrank / $waterNeededPerDay"
             )
-//            try {
-//                _position.value = repo.getContainerPos()
-//                _stateOfWater.value = StateOfWater.Loaded(
-//                    countWaterList = repo.getWaterReminder(),
-//                )
-//            } catch (e: Exception) {
-//                _stateOfWater.postValue(StateOfWater.Error)
-//            }
-            _stateOfWater.value = StateOfWater.Loaded2(
-                userProfile = repo.getAll()
-            )
+        }
+    }
+
+
+    fun addWaterAmount() {
+        _waterState.value?.selectedAmountOfWater?.let {
+            viewModelScope.launch {
+                val waterNeededPerDay = userRepository.getWaterReminder().waterContainer +
+                        userRepository.getWaterReminder().bonusWaterContainer
+                userRepository.addWater(it.waterContCap)
+                waterRepository.insertWaterContainer(it)
+
+                val waterValue = userRepository.getWaterReminder().alreadyDrank
+
+                _waterState.value = _waterState.value?.copy(
+                    drankWaterList = waterRepository.getAddedWater().map { it.mapToView()}.reversed(),
+                    drankWaterLabel = "$waterValue / $waterNeededPerDay"
+                )
+
+            }
+        }?: run {
+
         }
 
     }
+    fun addDrankWaterActivity() {
 
-
-
-    fun updateSpinner(): ArrayList<DrankWaterBase> {
-        return waterRepo.insertSpinnerData()
     }
 
-    fun getExerciseAC(): ArrayList<String> {
-        return repo.insertAutoCompletedText()
-    }
+    fun clearWaterAmount() {
+        viewModelScope.launch {
 
-    fun insertExercise(exerciseBase: ExerciseBase) = viewModelScope.launch(Dispatchers.IO) {
-       activityRepo.insertExercises(exerciseBase)
-        _stateOfWater.postValue(StateOfWater.Loaded(
-            activityList = activityRepo.getAllActivities(),
-            alreadyDrank = repo.getWaterReminder().alreadyDrank
-        ))
-    }
-
-    fun updateSpinnerPosition(position: Int) = viewModelScope.launch() {
-        _position.value = position
-    }
-
-    fun getPosition() = viewModelScope.launch(){
-        _position.value = repo.getContainerPos()
-    }
-
-    fun resetCap() = viewModelScope.launch {
-        repo.resetWater()
-        _stateOfWater.value = StateOfWater.Loaded(
-            alreadyDrank = 0,
-            bonusWaterContainer = 0,
-            countWaterList = repo.getWaterReminder()
-
-        )
-        updateWater()
-    }
-
-    fun deleteAddedWater(drunkWaterBase: DrankWaterBase) = viewModelScope.launch(Dispatchers.IO) {
-        waterRepo.deleteAddedWater(drunkWaterBase)
-    }
-
-
-    fun addToBonusWaterContainer(exerciseWaterIntake: Int) = viewModelScope.launch(){
-        repo.addToBonusWaterContainer(exerciseWaterIntake)
-        _stateOfWater.postValue(StateOfWater.Loaded(
-            bonusWaterContainer = repo.getWaterReminder().bonusWaterContainer,
-            alreadyDrank = repo.getWaterReminder().alreadyDrank,
-            countWaterList = repo.getWaterReminder(),
-            waterContainer = repo.getWaterReminder().waterContainer + repo.getWaterReminder().bonusWaterContainer,
-
-        ))
-    }
-
-
-    fun updateWater() = viewModelScope.launch() {
-        _stateOfWater.value = StateOfWater.Loaded(
-            countWaterList = repo.getWaterReminder(),
-            listOfWaterContainers = waterRepo.getAddedWater()
-        )
-    }
-
-
-    fun saveSpinnerPos(spinnerPos: Int) = viewModelScope.launch(Dispatchers.IO){
-        repo.saveSpinnerPos(spinnerPos)
-    }
-
-    fun getTime(): String {
-        return waterRepo.getDate()
-    }
-
-    fun compareDates() = viewModelScope.launch(Dispatchers.IO) {
-        val today = repo.getDate()
-        val profileDate = repo.getProfileDate()
-        val formatter = SimpleDateFormat("yyyy-MM-dd")
-        val firstDate: Date = formatter.parse(today)
-        val secondDate: Date = formatter.parse(profileDate)
-        when {
-            firstDate.after(secondDate) -> {
-                updateDate(today)
-                resetCap()
-            }
-            firstDate.before(secondDate) -> {
-                //wtf happened here :D
-            }
-            firstDate == secondDate -> {
-                // its fine do nothing
-            }
         }
+    }
+    fun deleteWaterAmount() {
+        viewModelScope.launch {
 
-
+        }
     }
 
-
-
-    private fun updateDate(currentDate: String) = viewModelScope.launch(Dispatchers.IO) {
-        repo.updateDate(currentDate)
+    fun selectDrankWaterItem(drankWaterView: DrankWaterView) {
+        viewModelScope.launch {
+          Log.d("sasdas", "${drankWaterView.dwCap}")
+        }
     }
 
-    fun countWaterDuringExercise(duration: Int, waterPerMinute: Int): Int {
-        return duration * waterPerMinute
+    fun passUnitToFlow() {
+        viewModelScope.launch {
+            _unitFlow.emit(Unit)
+        }
     }
 
-    fun countEntireWaterContainer(waterContainer: Int, bonusWaterContainer: Int): Int {
-        return waterContainer + bonusWaterContainer
-    }
-
-
-
-
-    fun addWater(drunkWater: Int, containers: DrankWaterBase, time: String) = viewModelScope.launch(Dispatchers.IO) {
-        repo.addWater(drunkWater)
-        containers.addedDate = time
-        waterRepo.insertWaterContainer(containers)
-        _stateOfWater.postValue(StateOfWater.Loaded(
-            alreadyDrank = repo.getWaterReminder().alreadyDrank,
-            waterContainer = repo.getWaterReminder().waterContainer,
-            countWaterList = repo.getWaterReminder(),
-            listOfWaterContainers = waterRepo.getAddedWater()
-        ))
-
-    }
-
-    fun deleteWater(drunkWater: Int) = viewModelScope.launch(Dispatchers.IO) {
-        repo.deleteWater(drunkWater)
-        _stateOfWater.postValue((StateOfWater.Loaded(
-            alreadyDrank = repo.getWaterReminder().alreadyDrank,
-            waterContainer = repo.getWaterReminder().waterContainer,
-            countWaterList = repo.getWaterReminder(),
-            listOfWaterContainers = waterRepo.getAddedWater()
-        )))
-    }
-
-    fun resetDrankWater() = viewModelScope.launch(Dispatchers.IO) {
-        repo.resetDrankWater()
-        _stateOfWater.postValue(StateOfWater.Loaded(
-            alreadyDrank = 0,
-            waterContainer = repo.getWaterReminder().waterContainer + repo.getWaterReminder().bonusWaterContainer
-        ))
-    }
-
-
-
-
-    sealed class StateOfWater{
-        data class Loaded(
-            val alreadyDrank: Int = Integer.MIN_VALUE + 0,
-            val waterContainer: Int = 0,
-            val bonusWaterContainer: Int = 0,
-            val currentDate: String = "",
-            val listOfWaterContainers: List<DrankWaterBase> = listOf(),
-            val activityList: List<ExerciseBase> = listOf(),
-            val countWaterList: WaterReminder? = WaterReminder(0, waterContainer = waterContainer, alreadyDrank = alreadyDrank, currentDate = currentDate,
-            bonusWaterContainer = bonusWaterContainer),
-        ): StateOfWater()
-        data class Loaded2(
-            val userProfile: List<UserProfile>? = listOf(),
-        ): StateOfWater()
-        object Error: StateOfWater()
-        object Loading: StateOfWater()
-        object IsEmpty: StateOfWater()
-    }
 }
+
+fun getDate(): String {
+    val time = Calendar.getInstance().time
+    val formatter = SimpleDateFormat("hh:mm a")
+    return formatter.format(time)
+}
+
+
+data class WaterStateData(
+    val selectedAmountOfWater: DrankWaterBase? = null,
+    val drankWaterList: List<DrankWaterView> = listOf(),
+    val drankWaterLabel: String = "",
+    )
+
+/**
+1. Create data class to hold screen water
+
+WaterStateData
+
+2. Create mutable live data to manage screen data
+
+private val _waterState = MutableLiveData<WaterStateData>()
+val waterState = _waterState as LiveData<WaterStateData>
+
+3. To update data class use copy
+
+_waterState.value = _waterState.value?.copy(selectedAmountOfWater = selectedAmountOfWater)
+
+4. You implement if conditions in view model - not in fragment
+
+5. Set default values in data class
+ */
+
+
+
 

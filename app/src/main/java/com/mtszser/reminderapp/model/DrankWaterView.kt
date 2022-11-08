@@ -6,10 +6,12 @@ data class DrankWaterView(
     val dwCap: Int,
     val dwImg: Int,
     val dwDate: String
-) {
+)
 
-    fun getCap(): String {
-        return dwCap.toString() + "ml"
-    }
+fun DrankWaterView.mapToDatabase() = DrankWaterBase(
+    waterContCap = this.dwCap,
+    waterContID = this.dwID,
+    addedDate = this.dwDate,
+    waterContImg = this.dwImg
+)
 
-}

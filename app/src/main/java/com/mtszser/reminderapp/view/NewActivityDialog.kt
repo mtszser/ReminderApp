@@ -25,11 +25,10 @@ class NewActivityDialog: DialogFragment() {
     private lateinit var cancelButton: AppCompatButton
 
     private val workoutDuration: String
-    get() = binding.workoutDuration.text.toString()
+        get() = binding.workoutDuration.text.toString()
 
     private val selectedExercise: String
-    get() = binding.exerciseListAC.text.toString()
-
+        get() = binding.exerciseListAC.text.toString()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,53 +41,54 @@ class NewActivityDialog: DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-       binding = DialogActivityInputBinding.inflate(inflater, container, false)
+        binding = DialogActivityInputBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//
+////        prepopulateAC()
+//        getButtons()
+//    }
+//
+////    private fun prepopulateAC() {
+////        val exercisesList = waterViewModel.getExerciseAC()
+////        val exercisesAdapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+////        exercisesList)
+////        binding.exerciseListAC.setAdapter(exercisesAdapter)
+////    }
+//
+//    private fun getButtons() {
+//        addButton = binding.addButton
+//        cancelButton = binding.cancelButton
+//
+//        addButton.setOnClickListener { addActivity() }
+//        cancelButton.setOnClickListener { dismiss() }
+//    }
+//
+//    private fun addActivity() {
+//        val duration = workoutDuration.toInt()
+//        when (selectedExercise) {
+//            "Walking" -> saveActivity(3, duration)
+//            "Medium Walking" -> saveActivity(5, duration)
+//            "Intense Walking" -> saveActivity(8, duration)
+//            "Jogging" -> saveActivity(13, duration)
+//            "Running" -> saveActivity(18, duration)
+//            "Riding a bike" -> saveActivity(10, duration)
+//            "Roller skating" -> saveActivity(10, duration)
+//            "Swimming" -> saveActivity(10, duration)
+//            "Gym Workout" -> saveActivity(5, duration)
+//            "Hot Day" -> saveActivity(500, 1)
+//        }
+//    }
+//
+//    private fun saveActivity(waterPerMinute: Int, duration: Int) {
+//        val waterIntake = waterViewModel.countWaterDuringExercise(duration, waterPerMinute)
+//        setFragmentResult("activityResult", bundleOf("waterIntake" to waterIntake, "selectedItem" to selectedExercise))
+//        dismiss()
+//        }
 
-        prepopulateAC()
-        getButtons()
     }
-
-    private fun prepopulateAC() {
-        val exercisesList = waterViewModel.getExerciseAC()
-        val exercisesAdapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-        exercisesList)
-        binding.exerciseListAC.setAdapter(exercisesAdapter)
-    }
-
-    private fun getButtons() {
-        addButton = binding.addButton
-        cancelButton = binding.cancelButton
-
-        addButton.setOnClickListener { addActivity() }
-        cancelButton.setOnClickListener { dismiss() }
-    }
-
-    private fun addActivity() {
-        val duration = workoutDuration.toInt()
-        when (selectedExercise) {
-            "Walking" -> saveActivity(3, duration)
-            "Medium Walking" -> saveActivity(5, duration)
-            "Intense Walking" -> saveActivity(8, duration)
-            "Jogging" -> saveActivity(13, duration)
-            "Running" -> saveActivity(18, duration)
-            "Riding a bike" -> saveActivity(10, duration)
-            "Roller skating" -> saveActivity(10, duration)
-            "Swimming" -> saveActivity(10, duration)
-            "Gym Workout" -> saveActivity(5, duration)
-            "Hot Day" -> saveActivity(500, 1)
-        }
-    }
-
-    private fun saveActivity(waterPerMinute: Int, duration: Int) {
-        val waterIntake = waterViewModel.countWaterDuringExercise(duration, waterPerMinute)
-        setFragmentResult("activityResult", bundleOf("waterIntake" to waterIntake, "selectedItem" to selectedExercise))
-        dismiss()
-        }
-
-    }
+}
 

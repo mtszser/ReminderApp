@@ -23,4 +23,14 @@ data class WaterReminder(
     val currentDate: String,
 )
 
+fun UserProfile.maptoView() = UserProfileView(
+    id = this.id,
+    firstName = this.firstName,
+    weight = this.weight,
+    height = this.height,
+    containerID = this.containerID,
+    waterReminder = this.waterReminder,
+    drankWaterBase = this.drankWaterBase,
+)
+
 
