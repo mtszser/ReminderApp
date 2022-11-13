@@ -12,12 +12,13 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.DialogActivityInputBinding
+import com.mtszser.reminderapp.model.DrankWaterView
 import com.mtszser.reminderapp.viewmodel.NewUserViewModel
 import com.mtszser.reminderapp.viewmodel.WaterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewActivityDialog: DialogFragment() {
+class NewActivityDialog(): DialogFragment() {
 
     private lateinit var binding: DialogActivityInputBinding
     private val waterViewModel: WaterViewModel by viewModels()

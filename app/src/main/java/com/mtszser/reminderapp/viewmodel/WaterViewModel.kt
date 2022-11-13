@@ -32,11 +32,15 @@ class WaterViewModel @Inject constructor(
     private val waterRepository: DrankWaterRepository
     ): ViewModel() {
 
-    private val _unitFlow = MutableSharedFlow<Unit>()
-    val unitFlow = _unitFlow as SharedFlow<Unit>
+    private val _waterUnitFlow = MutableSharedFlow<Unit>()
+    val waterUnitFlow = _waterUnitFlow as SharedFlow<Unit>
+
+    private val _activityUnitFlow = MutableSharedFlow<Unit>()
+    val activityUnitFlow = _activityUnitFlow as SharedFlow<Unit>
 
     private val _waterState =  MutableLiveData(WaterStateData())
     val waterState = _waterState as LiveData<WaterStateData>
+
 
     init {
         loadDrankWaterList()
@@ -55,11 +59,11 @@ class WaterViewModel @Inject constructor(
             val waterNeededPerDay = userRepository.getWaterReminder().waterContainer +
                     userRepository.getWaterReminder().bonusWaterContainer
 
-
             _waterState.value = waterState.value?.copy(
                 drankWaterList = waterRepository.getAddedWater().map { it.mapToView()},
                 drankWaterLabel = "$alreadyDrank / $waterNeededPerDay"
             )
+
         }
     }
 
@@ -79,6 +83,7 @@ class WaterViewModel @Inject constructor(
                     drankWaterLabel = "$waterValue / $waterNeededPerDay"
                 )
 
+
             }
         }?: run {
 
@@ -94,9 +99,9 @@ class WaterViewModel @Inject constructor(
 
         }
     }
-    fun deleteWaterAmount() {
+    fun deleteWaterAmount(drankWaterId: Int) {
         viewModelScope.launch {
-
+            waterRepository.deleteAddedWater(drankWaterId)
         }
     }
 
@@ -106,9 +111,15 @@ class WaterViewModel @Inject constructor(
         }
     }
 
-    fun passUnitToFlow() {
+    fun passWaterUnitToFlow() {
         viewModelScope.launch {
-            _unitFlow.emit(Unit)
+            _waterUnitFlow.emit(Unit)
+        }
+    }
+
+    fun passActivityUnitToFlow() {
+        viewModelScope.launch {
+            _activityUnitFlow.emit(Unit)
         }
     }
 
@@ -126,6 +137,8 @@ data class WaterStateData(
     val drankWaterList: List<DrankWaterView> = listOf(),
     val drankWaterLabel: String = "",
     )
+
+
 
 /**
 1. Create data class to hold screen water

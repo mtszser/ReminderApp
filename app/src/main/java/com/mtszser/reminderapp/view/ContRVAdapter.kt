@@ -1,6 +1,5 @@
 package com.mtszser.reminderapp.view
 
-import android.text.method.TextKeyListener.clear
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,18 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mtszser.reminderapp.R
+import com.mtszser.reminderapp.databinding.ActivityRvItemBinding
 import com.mtszser.reminderapp.databinding.WaterRvItemBinding
-import com.mtszser.reminderapp.model.DrankWaterBase
 import com.mtszser.reminderapp.model.DrankWaterView
-import com.mtszser.reminderapp.model.WaterContainers
-import com.mtszser.reminderapp.model.mapToView
-import java.text.SimpleDateFormat
-import java.util.*
-import javax.inject.Inject
 
 class ContRVAdapter(private val onItemClicked: (DrankWaterView) -> Unit)
-    : ListAdapter<DrankWaterView, ContRVAdapter.ViewWaterHolder>(ListDiffCallBack) {
-
+    : ListAdapter<DrankWaterView, ContRVAdapter.ViewWaterHolder>(ListDiffCallBack){
 
     inner class ViewWaterHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -34,6 +27,7 @@ class ContRVAdapter(private val onItemClicked: (DrankWaterView) -> Unit)
 
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewWaterHolder =
         ViewWaterHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.water_rv_item, parent, false)
@@ -47,9 +41,11 @@ class ContRVAdapter(private val onItemClicked: (DrankWaterView) -> Unit)
         holder.drankWaterCap.text = drankWaterItem.dwCap.toString()
         holder.drankWaterImg.setImageResource(drankWaterItem.dwImg)
         holder.drankWaterTime.text = drankWaterItem.dwDate
-
-
+        holder.drankWaterButton.setOnClickListener {
+            onItemClicked(drankWaterItem)
+        }
     }
+
 }
 
     object ListDiffCallBack: DiffUtil.ItemCallback<DrankWaterView>() {

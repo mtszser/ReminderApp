@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -38,7 +39,7 @@ class WaterFragment : Fragment() {
     private lateinit var mediaPlayer: MediaPlayer
     private var time: String = ""
     private val waterViewModel: WaterViewModel by viewModels()
-    private lateinit var  adapter: ContRVAdapter
+    private lateinit var  waterAdapter: ContRVAdapter
 
 
     private val drankWaterActivityRecyclerView
@@ -81,25 +82,24 @@ class WaterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ContRVAdapter(onItemClicked = {
-            waterViewModel.passUnitToFlow()
-            lifecycleScope.launchWhenStarted {
-                waterViewModel.unitFlow.collect {
-                    NewActivityDialog().show(this@WaterFragment.parentFragmentManager, null)
+        waterAdapter = ContRVAdapter(onItemClicked = {
+            waterViewModel.passWaterUnitToFlow()
+            lifecycleScope.launch {
+                val drankWaterItem = it
+                waterViewModel.waterUnitFlow.collect {
+                    DeleteAddedWaterDialog().show(this@WaterFragment.childFragmentManager, null)
                 }
             }
-
-
-
         })
 
 
+
         drankWaterActivityRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        drankWaterActivityRecyclerView.adapter = adapter
+        drankWaterActivityRecyclerView.adapter = waterAdapter
 
         waterViewModel.waterState.observe(viewLifecycleOwner) { state ->
             drankWaterTextView.text = state.drankWaterLabel
-            adapter.submitList(state.drankWaterList)
+            waterAdapter.submitList(state.drankWaterList)
             }
 
 
@@ -137,9 +137,6 @@ class WaterFragment : Fragment() {
             waterViewModel.clearWaterAmount()
         }
 
-        deleteWaterAmountButton.setOnClickListener {
-            waterViewModel.deleteWaterAmount()
-        }
 
 
         getMediaPlayer()
@@ -147,6 +144,9 @@ class WaterFragment : Fragment() {
 //        getResultFromDialog()
 
     }
+
+
+
 
 
 //    private fun getResultFromDialog() {

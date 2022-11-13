@@ -14,6 +14,6 @@ interface DrankWaterDao {
     @Insert
     suspend fun insertWaterContainer(waterContainer: DrankWaterBase)
 
-    @Delete
-    suspend fun deleteAddedWater(drankWaterBase: DrankWaterBase)
+    @Query("Delete from water_table Where waterContID = :drankWaterBaseId ")
+    suspend fun deleteAddedWater(drankWaterBaseId: Int)
 }
