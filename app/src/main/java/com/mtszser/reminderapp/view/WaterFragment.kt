@@ -1,8 +1,5 @@
 package com.mtszser.reminderapp.view
 
-import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -12,32 +9,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Spinner
-import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mtszser.reminderapp.databinding.FragmentWaterBinding
 import com.mtszser.reminderapp.model.DrankWaterBase
-import com.mtszser.reminderapp.model.DrankWaterView
 import com.mtszser.reminderapp.viewmodel.WaterViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class WaterFragment : Fragment() {
 
-    private lateinit var mySpinner: Spinner
     private lateinit var binding: FragmentWaterBinding
     private lateinit var mediaPlayer: MediaPlayer
-    private var time: String = ""
     private val waterViewModel: WaterViewModel by viewModels()
     private lateinit var  waterAdapter: ContRVAdapter
 
@@ -82,28 +66,18 @@ class WaterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        waterAdapter = ContRVAdapter(onItemClicked = {
-            waterViewModel.passWaterUnitToFlow()
-            lifecycleScope.launch {
-                val drankWaterItem = it
-                waterViewModel.waterUnitFlow.collect {
-                    DeleteAddedWaterDialog().show(this@WaterFragment.childFragmentManager, null)
-                }
-            }
-        })
 
-
-
+        waterAdapter = ContRVAdapter(onItemClicked = waterViewModel::deleteWaterAmount)
         drankWaterActivityRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         drankWaterActivityRecyclerView.adapter = waterAdapter
 
         waterViewModel.waterState.observe(viewLifecycleOwner) { state ->
             drankWaterTextView.text = state.drankWaterLabel
+            waterProgress.min = 0
+            waterProgress.max = state.waterPerDay
+            waterProgress.progress = state.alreadyDrank
             waterAdapter.submitList(state.drankWaterList)
             }
-
-
-
 
 
 
@@ -138,30 +112,11 @@ class WaterFragment : Fragment() {
         }
 
 
-
         getMediaPlayer()
         addExercise()
-//        getResultFromDialog()
 
     }
 
-
-
-
-
-//    private fun getResultFromDialog() {
-//        childFragmentManager.setFragmentResultListener("activityResult", viewLifecycleOwner) {key, bundle ->
-//            val result = bundle.getInt("waterIntake")
-//            val selectedItem = bundle.getString("selectedItem").toString()
-//            val exerciseBase = ExerciseBase(0, selectedItem, result)
-//            if (result.equals(null)) {
-//                Log.d("bundle", "nic tutaj niema!")
-//            } else {
-//                waterModel.insertExercise(exerciseBase)
-//                waterModel.addToBonusWaterContainer(result)
-//            }
-//        }
-//    }
 
 
     private fun addExercise() {

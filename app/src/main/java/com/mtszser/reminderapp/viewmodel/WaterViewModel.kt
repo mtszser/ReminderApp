@@ -8,22 +8,19 @@ import com.mtszser.reminderapp.model.*
 import com.mtszser.reminderapp.repository.ActivityRepository
 import com.mtszser.reminderapp.repository.DrankWaterRepository
 import com.mtszser.reminderapp.repository.UserRepository
-import com.mtszser.reminderapp.view.NewActivityDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
+sealed class WaterEvent{
+    data class AddDeleteWater(val drankWaterView: DrankWaterView) : WaterEvent()
+}
 
 @HiltViewModel
 class WaterViewModel @Inject constructor(
@@ -32,11 +29,8 @@ class WaterViewModel @Inject constructor(
     private val waterRepository: DrankWaterRepository
     ): ViewModel() {
 
-    private val _waterUnitFlow = MutableSharedFlow<Unit>()
-    val waterUnitFlow = _waterUnitFlow as SharedFlow<Unit>
-
-    private val _activityUnitFlow = MutableSharedFlow<Unit>()
-    val activityUnitFlow = _activityUnitFlow as SharedFlow<Unit>
+    private val _waterUnitFlow = MutableSharedFlow<WaterEvent>()
+    val waterUnitFlow = _waterUnitFlow as SharedFlow<WaterEvent>
 
     private val _waterState =  MutableLiveData(WaterStateData())
     val waterState = _waterState as LiveData<WaterStateData>
@@ -61,7 +55,10 @@ class WaterViewModel @Inject constructor(
 
             _waterState.value = waterState.value?.copy(
                 drankWaterList = waterRepository.getAddedWater().map { it.mapToView()},
-                drankWaterLabel = "$alreadyDrank / $waterNeededPerDay"
+                drankWaterLabel = "$alreadyDrank / $waterNeededPerDay",
+                alreadyDrank = alreadyDrank,
+                waterPerDay = waterNeededPerDay
+
             )
 
         }
@@ -75,15 +72,7 @@ class WaterViewModel @Inject constructor(
                         userRepository.getWaterReminder().bonusWaterContainer
                 userRepository.addWater(it.waterContCap)
                 waterRepository.insertWaterContainer(it)
-
-                val waterValue = userRepository.getWaterReminder().alreadyDrank
-
-                _waterState.value = _waterState.value?.copy(
-                    drankWaterList = waterRepository.getAddedWater().map { it.mapToView()}.reversed(),
-                    drankWaterLabel = "$waterValue / $waterNeededPerDay"
-                )
-
-
+                loadDrankWaterList()
             }
         }?: run {
 
@@ -99,29 +88,21 @@ class WaterViewModel @Inject constructor(
 
         }
     }
-    fun deleteWaterAmount(drankWaterId: Int) {
+    fun deleteWaterAmount(drankWaterView: DrankWaterView) {
         viewModelScope.launch {
-            waterRepository.deleteAddedWater(drankWaterId)
+            waterRepository.deleteAddedWater(drankWaterView.mapToDatabase())
+            userRepository.deleteWater(drankWaterView.mapToDatabase().waterContCap)
+            loadDrankWaterList()
         }
     }
 
-    fun selectDrankWaterItem(drankWaterView: DrankWaterView) {
+
+    fun passWaterUnitToFlow(drankWaterView: DrankWaterView) {
         viewModelScope.launch {
-          Log.d("sasdas", "${drankWaterView.dwCap}")
+            _waterUnitFlow.emit(WaterEvent.AddDeleteWater(drankWaterView))
         }
     }
 
-    fun passWaterUnitToFlow() {
-        viewModelScope.launch {
-            _waterUnitFlow.emit(Unit)
-        }
-    }
-
-    fun passActivityUnitToFlow() {
-        viewModelScope.launch {
-            _activityUnitFlow.emit(Unit)
-        }
-    }
 
 }
 
@@ -136,6 +117,9 @@ data class WaterStateData(
     val selectedAmountOfWater: DrankWaterBase? = null,
     val drankWaterList: List<DrankWaterView> = listOf(),
     val drankWaterLabel: String = "",
+    val alreadyDrank: Int = 0,
+    val waterPerDay: Int = 0,
+
     )
 
 

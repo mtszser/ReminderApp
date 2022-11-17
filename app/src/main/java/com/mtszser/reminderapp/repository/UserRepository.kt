@@ -25,6 +25,7 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
         return userDao.getAll()
     }
 
+
 //    suspend fun getAllActivities(): List<ExerciseBase>{
 //        return userDao.getActivityList()
 //    }

@@ -18,8 +18,8 @@ class DrankWaterRepository @Inject constructor(private val drankWaterDao: DrankW
         drankWaterDao.insertWaterContainer(waterContainer)
     }
 
-    suspend fun deleteAddedWater(drankWaterId: Int) {
-        drankWaterDao.deleteAddedWater(drankWaterId)
+    suspend fun deleteAddedWater(drankWaterBase: DrankWaterBase) {
+        drankWaterDao.deleteAddedWater(drankWaterBase)
 
     }
 

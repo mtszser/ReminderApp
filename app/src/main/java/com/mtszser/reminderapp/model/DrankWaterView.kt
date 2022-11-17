@@ -15,3 +15,5 @@ fun DrankWaterView.mapToDatabase() = DrankWaterBase(
     waterContImg = this.dwImg
 )
 
+
+

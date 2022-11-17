@@ -35,10 +35,7 @@ class ContRVAdapter(private val onItemClicked: (DrankWaterView) -> Unit)
 
     override fun onBindViewHolder(holder: ViewWaterHolder, position: Int) {
         val drankWaterItem = getItem(position)
-        holder.itemView.setOnClickListener{
-            onItemClicked(drankWaterItem)
-        }
-        holder.drankWaterCap.text = drankWaterItem.dwCap.toString()
+        holder.drankWaterCap.text = drankWaterItem.dwCap.toString() + "ml"
         holder.drankWaterImg.setImageResource(drankWaterItem.dwImg)
         holder.drankWaterTime.text = drankWaterItem.dwDate
         holder.drankWaterButton.setOnClickListener {
