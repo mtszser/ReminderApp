@@ -16,10 +16,11 @@
         <entry key="..\:/ReminderApp/app/src/main/res/drawable/ic_water_bottle.xml" value="0.2645" />
         <entry key="..\:/ReminderApp/app/src/main/res/drawable/ic_water_bottle_1l.xml" value="0.2645" />
         <entry key="..\:/ReminderApp/app/src/main/res/drawable/spinner_layout.xml" value="0.193" />
-        <entry key="..\:/ReminderApp/app/src/main/res/layout/activity_login.xml" value="0.17527173913043478" />
+        <entry key="..\:/ReminderApp/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/ReminderApp/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/ReminderApp/app/src/main/res/layout/activity_new_user.xml" value="0.2791666666666667" />
         <entry key="..\:/ReminderApp/app/src/main/res/layout/activity_rv_item.xml" value="0.365625" />
+        <entry key="..\:/ReminderApp/app/src/main/res/layout/base_activities_spinner_layout.xml" value="0.365625" />
         <entry key="..\:/ReminderApp/app/src/main/res/layout/dialog_activity_input.xml" value="0.365625" />
         <entry key="..\:/ReminderApp/app/src/main/res/layout/dialog_water_delete_item.xml" value="0.33" />
         <entry key="..\:/ReminderApp/app/src/main/res/layout/fragment_action.xml" value="0.10131712259371833" />

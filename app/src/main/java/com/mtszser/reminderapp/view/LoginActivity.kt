@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.Spinner
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.mtszser.reminderapp.databinding.ActivityLoginBinding
@@ -23,8 +25,8 @@ class LoginActivity : AppCompatActivity() {
     private val weight: String
         get() = binding.weight.text.toString()
 
-    private val height: String
-        get() = binding.height.text.toString()
+    private val activitySpinnerContainer
+    get() = binding.activitySpinnerContainer
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,28 +39,35 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun getProfile() {
-        userViewModel.state.observe(this, Observer { state ->
-            when (state) {
-                is NewUserViewModel.StateOfUser.Loaded -> {
-                    if (state.userList.isEmpty()) {
-                        binding.mainLayout.visibility = View.VISIBLE
-                        binding.saveUser.setOnClickListener {
-                            // zmienna z policzoną ilością wody do spożycia
-                            val waterIntake = userViewModel.countWater(weight = weight)
-                            val currentDate = userViewModel.getDate()
-                            val drankWater = DrankWaterBase(0, 0, 0, "")
-                            val waterList = WaterReminder(0, waterContainer = waterIntake, 0, 0, currentDate)
-                            val userProfile = UserProfile(0, firstName = name, weight = weight, height = height, 0, waterList, drankWater)
-                            userViewModel.insert(userProfile)
-                        }
-                    } else {
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
+        activitySpinnerContainer.apply {
+            adapter = ActivitySpinnerAdapter(context)
+            activitySpinnerContainer.adapter = adapter
+            activitySpinnerContainer.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, p3: Long) {
+                    userViewModel.selectActivityLevelBonusWater(adapter.getItem(position) as BaseActivities)
                 }
-                NewUserViewModel.StateOfUser.Error -> {}
-                NewUserViewModel.StateOfUser.Loading -> {}
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
+
+            }
+        }
+
+        userViewModel.usersState.observe(this, Observer { userState ->
+            if (userState.userList.isEmpty()) {
+                binding.mainLayout.visibility = View.VISIBLE
+                binding.saveUser.setOnClickListener {
+                    val drankWater = DrankWaterBase(0, 0, 0, "")
+                    val waterList = WaterReminder(0, waterContainer = userViewModel.countWater(weight = weight),
+                        userState.selectedActivityBonusWater!!.baseActivityBonusCalories, 0, userViewModel.getDate())
+                    val userProfile = UserProfile(0, firstName = name, weight = weight, 0, waterList, drankWater)
+                    userViewModel.insert(userProfile)
+                }
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         })
 

@@ -18,3 +18,11 @@ fun ExerciseBase.mapToView() = ExerciseBaseView(
     ebvBonusActivityWater = this.bonusActivityWater,
     ebvActivityDate = this.activityDate
 )
+
+data class BaseActivities(
+    val baseActivityID: Int,
+    val baseActivityName: String,
+    val baseActivityDesc: String,
+    val baseActivityBonusCalories: Int,
+
+)

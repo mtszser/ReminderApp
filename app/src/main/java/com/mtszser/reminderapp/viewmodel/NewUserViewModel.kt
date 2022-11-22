@@ -1,6 +1,7 @@
 package com.mtszser.reminderapp.viewmodel
 
 import androidx.lifecycle.*
+import com.mtszser.reminderapp.model.BaseActivities
 import com.mtszser.reminderapp.model.UserProfile
 import com.mtszser.reminderapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,24 +15,28 @@ import javax.inject.Inject
 @HiltViewModel
 class NewUserViewModel @Inject constructor(private val repo: UserRepository): ViewModel() {
 
-    private val _state = MutableLiveData<StateOfUser>()
-    val state = _state as LiveData<StateOfUser>
+    private val _usersState = MutableLiveData(StateOfUsers())
+    val usersState = _usersState as LiveData<StateOfUsers>
+
 
     init {
+        loadProfile()
+    }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            _state.postValue(StateOfUser.Loaded(
-                userList = repo.getAll(),
-            ))
+    private fun loadProfile() {
+        viewModelScope.launch {
+            _usersState.value = _usersState.value?.copy(
+                userList = repo.getAll()
+            )
         }
     }
 
 
-    fun insert(userProfile: UserProfile) = viewModelScope.launch(Dispatchers.IO) {
+    fun insert(userProfile: UserProfile) = viewModelScope.launch {
         repo.insert(userProfile)
-        _state.postValue(StateOfUser.Loaded(
+        _usersState.value = _usersState.value?.copy(
             userList = listOf(userProfile)
-        ))
+        )
 
     }
 
@@ -40,19 +45,21 @@ class NewUserViewModel @Inject constructor(private val repo: UserRepository): Vi
         return weights * 35
     }
 
+    fun selectActivityLevelBonusWater(basicActivities: BaseActivities) {
+
+        _usersState.value = _usersState.value?.copy(
+            selectedActivityBonusWater = basicActivities
+        )
+    }
+
 
     fun getDate(): String {
         return repo.getDate()
     }
 
-
-    sealed class StateOfUser{
-        data class Loaded(
-            val userList: List<UserProfile> = listOf(),
-        ) :StateOfUser()
-        object Error: StateOfUser()
-        object Loading: StateOfUser()
-    }
-
-
 }
+
+data class StateOfUsers(
+    val selectedActivityBonusWater: BaseActivities? = null,
+    val userList: List<UserProfile> = listOf(),
+)

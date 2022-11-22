@@ -26,12 +26,6 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
     }
 
 
-//    suspend fun getAllActivities(): List<ExerciseBase>{
-//        return userDao.getActivityList()
-//    }
-
-    // Water Repo Functions
-
     suspend fun getWaterReminder(): WaterReminder{
         return userDao.getWaterReminder()
     }

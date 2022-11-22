@@ -68,8 +68,8 @@ class WaterViewModel @Inject constructor(
     fun addWaterAmount() {
         _waterState.value?.selectedAmountOfWater?.let {
             viewModelScope.launch {
-                val waterNeededPerDay = userRepository.getWaterReminder().waterContainer +
-                        userRepository.getWaterReminder().bonusWaterContainer
+//                val waterNeededPerDay = userRepository.getWaterReminder().waterContainer +
+//                        userRepository.getWaterReminder().bonusWaterContainer
                 userRepository.addWater(it.waterContCap)
                 waterRepository.insertWaterContainer(it)
                 loadDrankWaterList()
@@ -119,7 +119,6 @@ data class WaterStateData(
     val drankWaterLabel: String = "",
     val alreadyDrank: Int = 0,
     val waterPerDay: Int = 0,
-
     )
 
 

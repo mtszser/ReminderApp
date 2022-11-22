@@ -24,12 +24,4 @@ class DrankWaterRepository @Inject constructor(private val drankWaterDao: DrankW
     }
 
 
-
-
-    fun getDate(): String {
-        val time = Calendar.getInstance().time
-        val formatter = SimpleDateFormat("hh:mm a")
-        return formatter.format(time)
-    }
-
 }

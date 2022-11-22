@@ -63,8 +63,10 @@ class WaterFragment : Fragment() {
 
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
 
         waterAdapter = ContRVAdapter(onItemClicked = waterViewModel::deleteWaterAmount)

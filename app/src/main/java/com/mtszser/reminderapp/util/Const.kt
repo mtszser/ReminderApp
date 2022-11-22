@@ -1,7 +1,9 @@
 package com.mtszser.reminderapp.util
 
 import com.mtszser.reminderapp.R
+import com.mtszser.reminderapp.model.BaseActivities
 import com.mtszser.reminderapp.model.DrankWaterBase
+import com.mtszser.reminderapp.model.ExerciseBase
 
 object Const {
     fun insertSpinnerData(): ArrayList<DrankWaterBase> = arrayListOf(
@@ -12,5 +14,12 @@ object Const {
         DrankWaterBase(waterContCap = 500, waterContImg = R.drawable.ic_water_bottle),
         DrankWaterBase(waterContCap = 750, waterContImg = R.drawable.ic_water_bottle_750ml),
         DrankWaterBase(waterContCap = 1000,  waterContImg = R.drawable.ic_water_bottle_1l)
+    )
+
+    fun insertActivitySpinnerData(): ArrayList<BaseActivities> = arrayListOf(
+        BaseActivities(baseActivityID = 1, baseActivityName = "Sedentary", baseActivityDesc = "does little or no physical movement and or exercise.", baseActivityBonusCalories = 300),
+        BaseActivities(baseActivityID = 2, baseActivityName = "Light Activity", baseActivityDesc = "basic activities like 30 min walking per day, jogging or physical work", baseActivityBonusCalories = 500),
+        BaseActivities(baseActivityID = 3, baseActivityName = "Moderately Active", baseActivityDesc = "1-3 workouts per week, running, hard physical work", baseActivityBonusCalories = 800),
+        BaseActivities(baseActivityID = 4, baseActivityName = "Very Active", baseActivityDesc = "at least 4-6 workouts per week, warm climate, hard physical work etc. ", baseActivityBonusCalories = 1300),
     )
 }

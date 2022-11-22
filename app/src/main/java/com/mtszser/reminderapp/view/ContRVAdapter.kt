@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.ActivityRvItemBinding
 import com.mtszser.reminderapp.databinding.WaterRvItemBinding
+import com.mtszser.reminderapp.model.DrankWaterBase
 import com.mtszser.reminderapp.model.DrankWaterView
+import com.mtszser.reminderapp.model.ExerciseBaseView
 
 class ContRVAdapter(private val onItemClicked: (DrankWaterView) -> Unit)
     : ListAdapter<DrankWaterView, ContRVAdapter.ViewWaterHolder>(ListDiffCallBack){
@@ -26,7 +28,6 @@ class ContRVAdapter(private val onItemClicked: (DrankWaterView) -> Unit)
 
 
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewWaterHolder =
         ViewWaterHolder(
