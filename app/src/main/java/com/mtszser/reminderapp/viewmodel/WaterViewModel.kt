@@ -3,6 +3,7 @@ package com.mtszser.reminderapp.viewmodel
 
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.mtszser.reminderapp.model.*
 import com.mtszser.reminderapp.repository.ActivityRepository
@@ -13,6 +14,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 import javax.inject.Inject
@@ -32,7 +35,7 @@ class WaterViewModel @Inject constructor(
     private val _waterUnitFlow = MutableSharedFlow<WaterEvent>()
     val waterUnitFlow = _waterUnitFlow as SharedFlow<WaterEvent>
 
-    private val _waterState =  MutableLiveData(WaterStateData())
+    private val _waterState = MutableLiveData(WaterStateData())
     val waterState = _waterState as LiveData<WaterStateData>
 
 
@@ -54,12 +57,12 @@ class WaterViewModel @Inject constructor(
                     userRepository.getWaterReminder().bonusWaterContainer
 
             _waterState.value = waterState.value?.copy(
-                drankWaterList = waterRepository.getAddedWater().map { it.mapToView()},
+                drankWaterList = waterRepository.getAddedWater().map { it.mapToView() },
                 drankWaterLabel = "$alreadyDrank / $waterNeededPerDay",
                 alreadyDrank = alreadyDrank,
                 waterPerDay = waterNeededPerDay
-
             )
+            compareDates()
 
         }
     }
@@ -74,20 +77,21 @@ class WaterViewModel @Inject constructor(
                 waterRepository.insertWaterContainer(it)
                 loadDrankWaterList()
             }
-        }?: run {
+        } ?: run {
 
         }
 
     }
+
     fun addDrankWaterActivity() {
 
     }
 
     fun clearWaterAmount() {
         viewModelScope.launch {
-
         }
     }
+
     fun deleteWaterAmount(drankWaterView: DrankWaterView) {
         viewModelScope.launch {
             waterRepository.deleteAddedWater(drankWaterView.mapToDatabase())
@@ -103,7 +107,9 @@ class WaterViewModel @Inject constructor(
         }
     }
 
+    private fun compareDates() {
 
+    }
 }
 
 fun getDate(): String {
@@ -119,6 +125,7 @@ data class WaterStateData(
     val drankWaterLabel: String = "",
     val alreadyDrank: Int = 0,
     val waterPerDay: Int = 0,
+    val currentDate: String = "",
     )
 
 

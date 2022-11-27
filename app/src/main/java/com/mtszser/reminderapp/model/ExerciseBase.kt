@@ -6,17 +6,17 @@ import com.mtszser.reminderapp.viewmodel.getDate
 
 @Entity(tableName = "exercise_table")
 data class ExerciseBase(
-    @PrimaryKey(autoGenerate = true)val activityID: Int = 0,
+    @PrimaryKey(autoGenerate = true) val activityID: Int = 0,
     val activityName: String,
     val bonusActivityWater: Int,
-    val activityDate: String = getDate()
+    val activityImage: Int,
 )
 
 fun ExerciseBase.mapToView() = ExerciseBaseView(
     ebvID = this.activityID,
     ebvName = this.activityName,
+    ebvImage = this.activityImage,
     ebvBonusActivityWater = this.bonusActivityWater,
-    ebvActivityDate = this.activityDate
 )
 
 data class BaseActivities(

@@ -5,15 +5,16 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
+    android:layout_margin="1dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="3dp"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="2dp"
     app:cardBackgroundColor="@color/theme_color">
     
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="#FBFAFA"
         android:orientation="horizontal"
         android:padding="5dp">
 
@@ -21,29 +22,30 @@
             android:id="@+id/waterContImg"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@mipmap/ic_launcher_round"
-            android:layout_marginStart="5dp"/>
-
-        <TextView
-            android:id="@+id/waterContCap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="35dp"
-            android:text="250ml"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:layout_marginStart="5dp"
+            android:src="@mipmap/ic_launcher_round" />
 
         <TextView
             android:id="@+id/waterContTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="35dp"
+            android:textColor="@color/black"
+            android:text="6:30pm"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/waterContCap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="55dp"
-            android:text="6:30 pm"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:text="330ml"
+            android:textColor="@color/bonus_water_text_color"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/capButton"

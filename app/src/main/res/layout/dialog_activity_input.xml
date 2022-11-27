@@ -37,7 +37,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/add_activity_to_calculate_your_water_consumption"
+                android:text="@string/calculate_your_water_consumption"
                 android:textColor="#2BBFF6"
                 app:layout_constraintStart_toStartOf="@+id/textView2"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />

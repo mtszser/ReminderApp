@@ -15,5 +15,9 @@ fun DrankWaterView.mapToDatabase() = DrankWaterBase(
     waterContImg = this.dwImg
 )
 
+data class BaseModel(
+    val drankWaterView: DrankWaterView,
+    val exerciseBase: ExerciseBase
+)
 
 

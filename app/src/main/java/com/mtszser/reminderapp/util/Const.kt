@@ -22,4 +22,16 @@ object Const {
         BaseActivities(baseActivityID = 3, baseActivityName = "Moderately Active", baseActivityDesc = "1-3 workouts per week, running, hard physical work", baseActivityBonusCalories = 800),
         BaseActivities(baseActivityID = 4, baseActivityName = "Very Active", baseActivityDesc = "at least 4-6 workouts per week, warm climate, hard physical work etc. ", baseActivityBonusCalories = 1300),
     )
+
+    fun insertExerciseSpinnerData(): ArrayList<ExerciseBase> = arrayListOf(
+        ExerciseBase(activityName = "Walking", bonusActivityWater = 0, activityImage = R.drawable.ic_walking),
+        ExerciseBase(activityName = "Medium Walking", bonusActivityWater = 0, activityImage = R.drawable.ic_walking),
+        ExerciseBase(activityName = "Intense Walking", bonusActivityWater = 0, activityImage = R.drawable.ic_walking),
+        ExerciseBase(activityName = "Jogging", bonusActivityWater = 0, activityImage = R.drawable.ic_running),
+        ExerciseBase(activityName = "Running", bonusActivityWater = 0, activityImage = R.drawable.ic_running),
+        ExerciseBase(activityName = "Roller skating", bonusActivityWater = 0, activityImage = R.drawable.ic_roller_skates),
+        ExerciseBase(activityName = "Swimming", bonusActivityWater = 0, activityImage = R.drawable.ic_swimming),
+        ExerciseBase(activityName = "Gym Workout", bonusActivityWater = 0, activityImage = R.drawable.ic_gym_weight_svgrepo_com),
+        ExerciseBase(activityName = "Hot day", bonusActivityWater = 500, activityImage = R.drawable.ic_hot_day),
+    )
 }

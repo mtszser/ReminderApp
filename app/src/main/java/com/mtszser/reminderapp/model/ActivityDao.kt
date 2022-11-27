@@ -14,6 +14,6 @@ interface ActivityDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertExercise(exerciseBase: ExerciseBase)
 
-    @Query("Select activityID, activityName, bonusActivityWater, activityDate from exercise_table")
+    @Query("Select activityID, activityName, bonusActivityWater, activityImage from exercise_table")
     suspend fun getActivity(): ExerciseBase
 }

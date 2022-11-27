@@ -1,4 +1,4 @@
-package com.mtszser.reminderapp.view
+package com.mtszser.reminderapp.view.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.model.DrankWaterBase
-import com.mtszser.reminderapp.model.WaterContainers
 import com.mtszser.reminderapp.util.Const
 
 

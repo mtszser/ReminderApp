@@ -1,8 +1,10 @@
 package com.mtszser.reminderapp.view
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
@@ -36,29 +38,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getNav() {
-
-        newUserViewModel.state.observe(this, Observer { state ->
-            when (state) {
-                is NewUserViewModel.StateOfUser.Loaded -> {
-                    if (state.userList.isEmpty()) {
-                        val intent = Intent(this, LoginActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        getNavigation()
-                    }
+        newUserViewModel.usersState.observe(this) { userState ->
+             if(userState.userList.isNotEmpty()) {
+                    getNavigation()
                 }
-                NewUserViewModel.StateOfUser.Error -> {}
-                NewUserViewModel.StateOfUser.Loading -> {}
             }
-        })
-    }
+        }
+
     private fun getNavigation() {
         val bottomMenu = binding.bottomNav
         val navController = findNavController(R.id.fragment)
-        val startDestination = navController.graph.startDestinationId
-        val navOptions = NavOptions.Builder().setPopUpTo(startDestination, true).build()
-        navController.navigate(startDestination, null, navOptions)
+//        val startDestination = navController.graph.startDestinationId
+//        val navOptions = NavOptions.Builder().setPopUpTo(startDestination, true).build()
+//        navController.navigate(startDestination, null, navOptions)
         bottomMenu.setupWithNavController(navController)
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)

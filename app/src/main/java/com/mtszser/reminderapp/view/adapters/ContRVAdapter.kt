@@ -1,4 +1,4 @@
-package com.mtszser.reminderapp.view
+package com.mtszser.reminderapp.view.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,11 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mtszser.reminderapp.R
-import com.mtszser.reminderapp.databinding.ActivityRvItemBinding
 import com.mtszser.reminderapp.databinding.WaterRvItemBinding
-import com.mtszser.reminderapp.model.DrankWaterBase
 import com.mtszser.reminderapp.model.DrankWaterView
-import com.mtszser.reminderapp.model.ExerciseBaseView
 
 class ContRVAdapter(private val onItemClicked: (DrankWaterView) -> Unit)
     : ListAdapter<DrankWaterView, ContRVAdapter.ViewWaterHolder>(ListDiffCallBack){

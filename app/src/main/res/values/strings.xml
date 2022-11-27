@@ -11,9 +11,11 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="add_new_activity">Add New Activity</string>
-    <string name="add_activity_to_calculate_your_water_consumption">add activity to calculate your water consumption</string>
+    <string name="calculate_your_water_consumption">to calculate your bonus water consumption</string>
     <string name="basic_activity_name">basic Activity Name</string>
     <string name="basic_activity_description">basic Activity description</string>
+    <string name="back">back</string>
+    <string name="exercise">Choose exercise</string>
     <string-array name="water_containers">
         <item>100ml</item>
         <item>250ml</item>

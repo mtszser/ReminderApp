@@ -10,4 +10,5 @@
     <color name="progress_bar">#A5ECF6</color>
     <color name="progress_bar2">#78E8F8</color>
     <color name="theme_color">#F4FCFF</color>
+    <color name="bonus_water_text_color">#56B4FB</color>
 </resources>

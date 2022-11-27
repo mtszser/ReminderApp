@@ -24,7 +24,7 @@ class NewUserViewModel @Inject constructor(private val repo: UserRepository): Vi
     }
 
     private fun loadProfile() {
-        viewModelScope.launch {
+        viewModelScope.launch{
             _usersState.value = _usersState.value?.copy(
                 userList = repo.getAll()
             )
@@ -32,34 +32,8 @@ class NewUserViewModel @Inject constructor(private val repo: UserRepository): Vi
     }
 
 
-    fun insert(userProfile: UserProfile) = viewModelScope.launch {
-        repo.insert(userProfile)
-        _usersState.value = _usersState.value?.copy(
-            userList = listOf(userProfile)
-        )
-
-    }
-
-    fun countWater(weight: String): Int {
-        val weights = weight.toInt()
-        return weights * 35
-    }
-
-    fun selectActivityLevelBonusWater(basicActivities: BaseActivities) {
-
-        _usersState.value = _usersState.value?.copy(
-            selectedActivityBonusWater = basicActivities
-        )
-    }
-
-
-    fun getDate(): String {
-        return repo.getDate()
-    }
-
 }
 
 data class StateOfUsers(
-    val selectedActivityBonusWater: BaseActivities? = null,
     val userList: List<UserProfile> = listOf(),
 )

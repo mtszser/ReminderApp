@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_waterFragment_to_actionFragment"
             app:destination="@id/actionFragment" />
+        <action
+            android:id="@+id/action_waterFragment_to_activityFragment"
+            app:destination="@id/exerciseFragment" />
     </fragment>
     <fragment
         android:id="@+id/actionFragment"
@@ -45,6 +48,15 @@
             app:destination="@id/actionFragment" />
         <action
             android:id="@+id/action_settingsFragment_to_waterFragment2"
+            app:destination="@id/waterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseFragment"
+        android:name="com.mtszser.reminderapp.view.ExerciseFragment"
+        android:label="Bonus Activity"
+        tools:layout="@layout/fragment_exercise">
+        <action
+            android:id="@+id/action_activityFragment_to_waterFragment"
             app:destination="@id/waterFragment" />
     </fragment>
 </navigation>

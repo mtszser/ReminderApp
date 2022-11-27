@@ -53,4 +53,8 @@
         <item name="android:windowIsFloating">false</item>
     </style>
 
+    <style name="Theme.ReminderApp.BackgroundStyle">
+        <item name="android:windowBackground">@drawable/background_color_layout</item>
+    </style>
+
 </resources>

@@ -10,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mtszser.reminderapp.databinding.FragmentWaterBinding
 import com.mtszser.reminderapp.model.DrankWaterBase
+import com.mtszser.reminderapp.view.adapters.ContRVAdapter
+import com.mtszser.reminderapp.view.adapters.ContainerAdapter
 import com.mtszser.reminderapp.viewmodel.WaterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,12 +40,6 @@ class WaterFragment : Fragment() {
 
     private val addDrankWaterActivityButton
     get() = binding.addActivityButton
-
-    private val clearWaterAmountButton
-    get() = binding.waterClearButton
-
-    private val deleteWaterAmountButton
-    get() = binding.waterDeleteButton
 
     private val waterProgress
     get() = binding.waterProgressBar
@@ -109,9 +106,6 @@ class WaterFragment : Fragment() {
         addDrankWaterActivityButton.setOnClickListener {
         }
 
-        clearWaterAmountButton.setOnClickListener {
-            waterViewModel.clearWaterAmount()
-        }
 
 
         getMediaPlayer()
@@ -123,8 +117,9 @@ class WaterFragment : Fragment() {
 
     private fun addExercise() {
         binding.addActivityButton.setOnClickListener {
-            val dialog = NewActivityDialog()
-            dialog.show(childFragmentManager, "New Activity")
+            val exerciseFragmentDestination = WaterFragmentDirections.actionWaterFragmentToActivityFragment()
+            findNavController().navigate(exerciseFragmentDestination)
+
 
         }
 
@@ -136,33 +131,6 @@ class WaterFragment : Fragment() {
         mediaPlayer.setDataSource(requireContext(), Uri.parse(filename))
         mediaPlayer.prepare()
     }
-
-
-
-//    private fun setProgressBar(waterContainer: Int?, alreadyDrank: Int?) {
-//        Log.d("progress bar" , "$alreadyDrank")
-//        val progressBar = binding.waterProgressBar
-//        progressBar.min = 0
-//        if (waterContainer != null && alreadyDrank != null) {
-//            progressBar.max = waterContainer
-//            progressBar.progress = alreadyDrank
-//        }
-//        binding.waterClearButton.setOnClickListener{
-//                val builder = AlertDialog.Builder(activity)
-//                builder.setTitle("Confirm Reset")
-//                builder.setMessage("Are you sure you want to reset your water consumption?")
-//                builder.setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog, id ->
-//                    dialog.cancel()
-//                    waterModel.resetCap()
-//                })
-//                builder.setNegativeButton("No", DialogInterface.OnClickListener{dialog, id ->
-//                    dialog.cancel()
-//                })
-//                val alert = builder.create()
-//                alert.show()
-//        }
-//        Log.d("progress" , "${progressBar.progress}")
-//    }
 
 
 }

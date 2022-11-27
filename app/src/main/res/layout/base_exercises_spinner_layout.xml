@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/baseExerciseImage"
+        android:layout_width="45dp"
+        android:src="@drawable/ic_gym_weight_svgrepo_com"
+        android:layout_height="45dp"
+        android:layout_marginStart="5dp">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/baseExerciseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/exercise"
+        android:textColor="@color/black"
+        android:layout_gravity="center">
+
+    </TextView>
+
+</LinearLayout>

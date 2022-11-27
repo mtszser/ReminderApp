@@ -1,4 +1,4 @@
-package com.mtszser.reminderapp.view
+package com.mtszser.reminderapp.view.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -28,9 +28,9 @@ class ActivitySpinnerAdapter(context: Context): ArrayAdapter<BaseActivities>(con
 
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.base_activities_spinner_layout, parent, false)
         val basicActivityName = view.findViewById<TextView>(R.id.basicActivityName)
-
         basicActivityName.text = baseActivityItem?.baseActivityName
 
         return view
     }
+
 }
