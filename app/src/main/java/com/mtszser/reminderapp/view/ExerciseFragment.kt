@@ -12,6 +12,9 @@ import android.widget.AutoCompleteTextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.FragmentExerciseBinding
@@ -19,8 +22,11 @@ import com.mtszser.reminderapp.model.DrankWaterBase
 import com.mtszser.reminderapp.model.ExerciseBase
 import com.mtszser.reminderapp.util.Const
 import com.mtszser.reminderapp.view.adapters.ExercisesSpinnerAdapter
+import com.mtszser.reminderapp.viewmodel.ExerciseValidationEvent
 import com.mtszser.reminderapp.viewmodel.ExerciseViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.zip.Inflater
 
 @AndroidEntryPoint
@@ -29,8 +35,11 @@ class ExerciseFragment : Fragment() {
     private lateinit var binding: FragmentExerciseBinding
     private val exerciseViewModel: ExerciseViewModel by viewModels()
 
-    private val workoutDuration: String
-        get() = binding.workoutDuration.text.toString()
+    private val workoutDuration
+        get() = binding.workoutDuration
+
+    private val workoutDurationLayout
+    get() = binding.workoutDurationLayout
 
     private val exerciseACTV
         get() = binding.exerciseACTV
@@ -50,28 +59,63 @@ class ExerciseFragment : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        exerciseACTV.apply {
-            setAdapter(ExercisesSpinnerAdapter(requireContext()))
-            onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
-                override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, p3: Long) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        inputValidation()
+        lifecycleScope.launch{
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                exerciseViewModel.exerciseValidationFlow.collect { event ->
+                    when(event) {
+                        ExerciseValidationEvent.IsEmpty -> {
+                            workoutDurationLayout.error = "is Empty"
+                        }
+                        ExerciseValidationEvent.IsValidated -> {
+                            workoutDurationLayout.error = null
+                        }
+                        ExerciseValidationEvent.DurationOutOfRange -> {
+                            workoutDurationLayout.error = "is Out of Range"
+                        }
+                        ExerciseValidationEvent.DurationValueIsNegative -> {
+                            workoutDurationLayout.error = "is Negative"
+                        }
+                    }
 
-                }
 
-                override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
         }
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
+        exerciseACTV.apply {
+            setAdapter(ExercisesSpinnerAdapter(requireContext()))
+            setOnItemClickListener { _, view, position, _ ->
+                val getExerciseItem = adapter.getItem(position) as ExerciseBase
+                setText(getExerciseItem.activityName)
+                exerciseViewModel.selectActivity(getExerciseItem)
+                addActivity()
 
+            }
+
+        }
+
+
+    }
+
+    private fun inputValidation() {
+        workoutDuration.setOnFocusChangeListener{_, focused ->
+            exerciseViewModel.onWorkoutDurationFocusChange(workoutDuration.text.toString())
+        }
+    }
+
+
+    private fun addActivity() {
+        addActivityButton.setOnClickListener {
+            exerciseViewModel.addActivity(workoutDuration.toString().toInt())
+            findNavController().popBackStack()
+        }
     }
 }
 

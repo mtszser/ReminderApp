@@ -16,4 +16,6 @@ interface ActivityDao {
 
     @Query("Select activityID, activityName, bonusActivityWater, activityImage from exercise_table")
     suspend fun getActivity(): ExerciseBase
+
+
 }

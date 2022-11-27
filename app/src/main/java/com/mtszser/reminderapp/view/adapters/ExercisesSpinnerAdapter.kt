@@ -1,7 +1,6 @@
 package com.mtszser.reminderapp.view.adapters
 
 import android.content.Context
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +9,12 @@ import android.widget.Filter
 import android.widget.ImageView
 import android.widget.TextView
 import com.mtszser.reminderapp.R
-import com.mtszser.reminderapp.databinding.BaseActivitiesSpinnerLayoutBinding
 import com.mtszser.reminderapp.model.ExerciseBase
 import com.mtszser.reminderapp.util.Const
 
 class ExercisesSpinnerAdapter(context: Context): ArrayAdapter<ExerciseBase>(context,0, Const.insertExerciseSpinnerData()) {
 
+    private lateinit var exerciseBaseItems: ExerciseBase
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return this.createView(position, convertView, parent)
@@ -27,6 +26,7 @@ class ExercisesSpinnerAdapter(context: Context): ArrayAdapter<ExerciseBase>(cont
 
     private fun createView(position: Int, convertView: View?, parent: ViewGroup): View {
 
+        exerciseBaseItems = getItem(position)!!
         val exerciseBaseItem = getItem(position)
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.base_exercises_spinner_layout, parent, false)
         val baseExerciseName = view.findViewById<TextView>(R.id.baseExerciseName)
@@ -35,6 +35,10 @@ class ExercisesSpinnerAdapter(context: Context): ArrayAdapter<ExerciseBase>(cont
         baseExerciseName.text = exerciseBaseItem.activityName
 
         return view
+    }
+
+    override fun toString(): String {
+        return exerciseBaseItems.activityName
     }
 
 
