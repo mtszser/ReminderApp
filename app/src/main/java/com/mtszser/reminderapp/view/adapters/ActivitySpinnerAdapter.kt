@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.mtszser.reminderapp.R
-import com.mtszser.reminderapp.databinding.BaseActivitiesSpinnerLayoutBinding
 import com.mtszser.reminderapp.model.BaseActivities
 import com.mtszser.reminderapp.util.Const
 

@@ -16,6 +16,20 @@
     <string name="basic_activity_description">basic Activity description</string>
     <string name="back">back</string>
     <string name="exercise">Choose exercise</string>
+    <string name="value_out_of_range">Value is out of range!</string>
+    <string name="value_is_empty">Value is empty!</string>
+    <string name="value_cannot_be_negative">Value cannot be negative!</string>
+    <string name="name_is_empty">Name is empty</string>
+    <string name="name_in_lower_case">Name cannot be only in lower case.</string>
+    <string name="name_is_too_long">Name is longer than 16 characters!</string>
+    <string name="name_is_too_short">Name must be between 3–16 characters.</string>
+    <string name="name_in_upper_case">Name cannot be only in upper case.</string>
+    <string name="please_enter_valid_name">Name is invalid.</string>
+    <string name="weight_is_empty">Weight is empty!</string>
+    <string name="weight_is_invalid">Weight is invalid!</string>
+    <string name="select_activity_level">Select activity level</string>
+    <string name="choose_activity_level">Choose activity level!</string>
+    <string name="user_greetings">Hello ${state.userProfileView?.firstName}! This is your goal for today.</string>
     <string-array name="water_containers">
         <item>100ml</item>
         <item>250ml</item>

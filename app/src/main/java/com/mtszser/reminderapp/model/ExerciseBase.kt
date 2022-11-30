@@ -10,7 +10,11 @@ data class ExerciseBase(
     val activityName: String,
     val bonusActivityWater: Int,
     val activityImage: Int,
-)
+) {
+    override fun toString(): String {
+        return activityName
+    }
+}
 
 fun ExerciseBase.mapToView() = ExerciseBaseView(
     ebvID = this.activityID,
@@ -24,5 +28,8 @@ data class BaseActivities(
     val baseActivityName: String,
     val baseActivityDesc: String,
     val baseActivityBonusCalories: Int,
-
-)
+) {
+    override fun toString(): String {
+        return baseActivityName
+    }
+}

@@ -6,141 +6,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#90D1EF"
+    android:background="@drawable/background_color_layout"
     tools:context=".view.LoginActivity">
-    <TextView
-        android:id="@+id/modelText"
-        android:layout_width="0sp"
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/account_info"
-        android:textAlignment="center"
-        android:textSize="18sp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        </TextView>
 
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="#85FFFFFF"
-            android:orientation="vertical"
-            android:padding="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/modelText">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/modelText"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/account_info"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+            </TextView>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nameInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/black"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/black"
-                app:hintTextColor="@color/black"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:hint="@string/name"
-                android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:boxStrokeWidth="2dp">
+                android:layout_marginTop="5dp"
+                app:boxStrokeWidth="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/modelText">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/name"
+                    android:id="@+id/nameInput"
                     android:layout_width="match_parent"
-                    android:focusable="true"
-                    android:layout_margin="5dp"
-                    android:background="#F8F7F7"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/black"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/userWeightInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/black"
-                app:boxBackgroundMode="outline"
-                app:hintTextColor="@color/black"
-                app:boxStrokeColor="@color/black"
-                android:hint="Height(cm)"
-                android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:boxStrokeWidth="2dp"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="@color/black"
-                app:boxBackgroundMode="outline"
-                app:hintTextColor="@color/black"
-                app:boxStrokeColor="@color/black"
+                android:layout_marginTop="10dp"
                 android:hint="Weight(kg)"
-                android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:boxStrokeWidth="2dp">
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeWidth="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameInputLayout">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/weight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:focusable="true"
-                    android:background="#F8F7F7"
+                    android:textColor="@color/black"
                     android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/userActivityLevelLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                app:boxStrokeWidth="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/userWeightInputLayout">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/userActivityLevelACTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:completionThreshold="0"
+                android:hint="Activity level">
+            </com.google.android.material.textfield.MaterialAutoCompleteTextView>
+
 
             </com.google.android.material.textfield.TextInputLayout>
-            <TextView
-                android:layout_width="match_parent"
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/saveUser"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:text="Activity Level:">
-            </TextView>
-                <Spinner
-                    android:id="@+id/activitySpinnerContainer"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dialog" />
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/checkWoman"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/black"
-                android:text="@string/woman">
-
-            </androidx.appcompat.widget.AppCompatCheckBox>
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/checkMan"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/black"
-                android:text="@string/man" />
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/checkOther"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/black"
-                android:text="@string/other">
-
-            </androidx.appcompat.widget.AppCompatCheckBox>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:layout_marginTop="15dp"
+                android:text="@string/save"
+                android:textSize="20sp"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/userActivityLevelLayout" />
 
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/saveUser"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/save"
-                    android:textSize="20sp" />
-            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
-
+    </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,19 +18,21 @@
         android:gravity="top">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/userGreetings"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:textAlignment="center"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            android:text="Today's Goal:"
+            android:textColor="@color/bonus_water_text_color"
+            android:text="Hello name!\nThis is your goal for today:"
             android:textSize="18sp" />
 
 
         <RelativeLayout
             android:id="@+id/waterLayout"
-            android:minHeight="400dp"
+            android:minHeight="350dp"
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:orientation="vertical">
@@ -41,6 +43,10 @@
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_centerInParent="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:minWidth="250dp"
                 android:minHeight="250dp">
 
@@ -75,19 +81,6 @@
                 android:minWidth="25dp"
                 android:minHeight="25dp" />
 
-
-            <ImageButton
-                android:id="@+id/waterClearButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/ic_undo_svgrepo_com"
-                android:minWidth="25dp"
-                android:minHeight="25dp">
-            </ImageButton>
 
             <ImageButton
                 android:id="@+id/waterDeleteButton"

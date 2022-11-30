@@ -30,6 +30,9 @@ interface UserDao {
     @Query("Select currentDate from user_table")
     suspend fun getProfileDate(): String
 
+    @Query("Select * from user_table")
+    suspend fun getUserProfile(): UserProfile
+
     @Query("Update user_table set bonusWaterContainer = bonusWaterContainer + :exerciseWaterIntake")
     suspend fun addToBonusWaterContainer(exerciseWaterIntake: Int)
 

@@ -67,23 +67,23 @@ class ExerciseFragment : Fragment() {
                 exerciseViewModel.exerciseValidationFlow.collect { event ->
                     when(event) {
                         ExerciseValidationEvent.IsEmpty -> {
-                            workoutDurationLayout.error = "is Empty"
+                            workoutDurationLayout.error = getString(R.string.value_is_empty)
                         }
                         ExerciseValidationEvent.IsValidated -> {
                             workoutDurationLayout.error = null
                         }
                         ExerciseValidationEvent.DurationOutOfRange -> {
-                            workoutDurationLayout.error = "is Out of Range"
+                            workoutDurationLayout.error = getString(R.string.value_out_of_range)
                         }
                         ExerciseValidationEvent.DurationValueIsNegative -> {
-                            workoutDurationLayout.error = "is Negative"
+                            workoutDurationLayout.error = getString(R.string.value_cannot_be_negative)
                         }
+                        else -> {
+                            error("Something bad happened")}
                     }
-
-
+                    }
                 }
             }
-        }
 
         backButton.setOnClickListener {
             findNavController().popBackStack()
@@ -91,9 +91,8 @@ class ExerciseFragment : Fragment() {
 
         exerciseACTV.apply {
             setAdapter(ExercisesSpinnerAdapter(requireContext()))
-            setOnItemClickListener { _, view, position, _ ->
+            setOnItemClickListener { _, _, position, _ ->
                 val getExerciseItem = adapter.getItem(position) as ExerciseBase
-                setText(getExerciseItem.activityName)
                 exerciseViewModel.selectActivity(getExerciseItem)
                 addActivity()
 
@@ -105,7 +104,7 @@ class ExerciseFragment : Fragment() {
     }
 
     private fun inputValidation() {
-        workoutDuration.setOnFocusChangeListener{_, focused ->
+        workoutDuration.setOnFocusChangeListener{_, _ ->
             exerciseViewModel.onWorkoutDurationFocusChange(workoutDuration.text.toString())
         }
     }

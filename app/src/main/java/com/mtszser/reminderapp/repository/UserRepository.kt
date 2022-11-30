@@ -25,6 +25,10 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
         return userDao.getAll()
     }
 
+    suspend fun getUserProfile(): UserProfile {
+        return userDao.getUserProfile()
+    }
+
 
     suspend fun getWaterReminder(): WaterReminder{
         return userDao.getWaterReminder()
@@ -58,31 +62,6 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
 //    }
 
 
-    fun insertAutoCompletedText(): ArrayList<String> {
-        val autoCompletedArray = ArrayList<String>()
-        autoCompletedArray.apply {
-            add(0, "Walking")
-            add(1, "Medium Walking")
-            add(2, "Intense Walking")
-            add(3, "Jogging")
-            add(4, "Running")
-            add(5, "Riding a bike")
-            add(6, "Roller skating")
-            add(7, "Swimming")
-            add(8, "Gym Workout")
-            add(9, "Hot Day")
-        }
-        return autoCompletedArray
-    }
-
-
-    suspend fun saveSpinnerPos(spinnerPos: Int){
-        userDao.saveSpinnerPos(spinnerPos)
-    }
-
-    suspend fun getContainerPos(): Int{
-        return userDao.getContainerPos()
-    }
 
     fun getDate(): String {
         val time = Calendar.getInstance().time

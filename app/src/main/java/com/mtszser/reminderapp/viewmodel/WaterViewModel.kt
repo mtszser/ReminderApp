@@ -60,7 +60,8 @@ class WaterViewModel @Inject constructor(
                 drankWaterList = waterRepository.getAddedWater().map { it.mapToView() },
                 drankWaterLabel = "$alreadyDrank / $waterNeededPerDay",
                 alreadyDrank = alreadyDrank,
-                waterPerDay = waterNeededPerDay
+                waterPerDay = waterNeededPerDay,
+                userProfileView = userRepository.getUserProfile().maptoView()
             )
             compareDates()
 
@@ -126,7 +127,9 @@ data class WaterStateData(
     val alreadyDrank: Int = 0,
     val waterPerDay: Int = 0,
     val currentDate: String = "",
+    val userProfileView: UserProfileView? = null
     )
+
 
 
 

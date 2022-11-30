@@ -12,6 +12,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.FragmentWaterBinding
 import com.mtszser.reminderapp.model.DrankWaterBase
 import com.mtszser.reminderapp.view.adapters.ContRVAdapter
@@ -47,6 +48,9 @@ class WaterFragment : Fragment() {
     private val drankWaterTextView
     get() = binding.drankWaterTV
 
+    private val greetingText
+    get() = binding.userGreetings
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,6 +80,7 @@ class WaterFragment : Fragment() {
             waterProgress.max = state.waterPerDay
             waterProgress.progress = state.alreadyDrank
             waterAdapter.submitList(state.drankWaterList)
+            greetingText.text = "Hello ${state.userProfileView?.firstName}!\nThis is your goal for today:"
             }
 
 
@@ -101,6 +106,8 @@ class WaterFragment : Fragment() {
 
         addWaterAmountButton.setOnClickListener {
             waterViewModel.addWaterAmount()
+            mediaPlayer.start()
+
         }
 
         addDrankWaterActivityButton.setOnClickListener {

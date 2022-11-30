@@ -8,6 +8,8 @@ import com.mtszser.reminderapp.model.BaseActivities
 import com.mtszser.reminderapp.model.UserProfile
 import com.mtszser.reminderapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,6 +19,9 @@ class LoginViewModel @Inject constructor(private val repo: UserRepository): View
 
     private val _userState = MutableLiveData(StateOfUser())
     val usersState = _userState as LiveData<StateOfUser>
+
+    private val _loginValidationFlow = MutableSharedFlow<LoginValidationEvent>()
+    val loginValidationFlow = _loginValidationFlow as SharedFlow<LoginValidationEvent>
 
     init {
         loadProfile()
@@ -55,9 +60,58 @@ class LoginViewModel @Inject constructor(private val repo: UserRepository): View
 
     }
 
-}
+
+    fun onNameInputFocusChange(userName: String) {
+        viewModelScope.launch {
+            if(userName.isEmpty()) {
+                _loginValidationFlow.emit(LoginValidationEvent.NameIsEmpty)
+            } else if(userName.length > 16 || !userName.all { it.isLetter() } || userName.length < 3){
+                _loginValidationFlow.emit(LoginValidationEvent.NameIsInvalid)
+            } else if (userName.isNotEmpty() && userName.length in 3..16 && userName.all { it.isLetter() }){
+                _loginValidationFlow.emit(LoginValidationEvent.NameIsValidated)
+            }
+        }
+    }
+
+    fun onWeightInputFocusChange(userWeight: String){
+        viewModelScope.launch {
+            if(userWeight.isEmpty()){
+                _loginValidationFlow.emit(LoginValidationEvent.WeightIsEmpty)
+            } else if(userWeight.toInt() !in 41..200) {
+                _loginValidationFlow.emit(LoginValidationEvent.WeightIsInvalid)
+            } else if(userWeight.toInt() in 41..200 && userWeight.isNotEmpty()){
+                _loginValidationFlow.emit(LoginValidationEvent.WeightIsValidated)
+            }
+        }
+    }
+
+    fun onActivityLevelInputFocusChange(isEmpty: Boolean) {
+        viewModelScope.launch {
+            if(isEmpty){
+                _loginValidationFlow.emit(LoginValidationEvent.ActivityLevelIsNotPicked)
+            } else if(!isEmpty) {
+                _loginValidationFlow.emit(LoginValidationEvent.ActivityLevelIsValidated)
+            }
+
+        }
+    }
+
+    }
 
 data class StateOfUser(
     val selectedActivityBonusWater: BaseActivities? = null,
     val userList: List<UserProfile> = listOf(),
 )
+
+sealed class LoginValidationEvent{
+    object NameIsEmpty: LoginValidationEvent()
+    object NameIsInvalid: LoginValidationEvent()
+    object NameIsValidated: LoginValidationEvent()
+
+    object WeightIsEmpty: LoginValidationEvent()
+    object WeightIsInvalid: LoginValidationEvent()
+    object WeightIsValidated: LoginValidationEvent()
+
+    object ActivityLevelIsValidated: LoginValidationEvent()
+    object ActivityLevelIsNotPicked: LoginValidationEvent()
+}
