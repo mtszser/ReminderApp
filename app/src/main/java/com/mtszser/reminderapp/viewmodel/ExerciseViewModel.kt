@@ -47,12 +47,12 @@ class ExerciseViewModel @Inject constructor(
     }
 
     fun addActivity(exerciseDuration: Int) {
-
             _exerciseState.value?.selectedExercise?.let {
                 viewModelScope.launch {
                     val bonusWaterConsumption = countBonusCalories(it.bonusActivityWater, exerciseDuration)
                     userRepository.addToBonusWaterContainer(bonusWaterConsumption)
                     activityRepository.insertExercises(it)
+                    loadData()
                 }
             }
     }
@@ -73,6 +73,14 @@ class ExerciseViewModel @Inject constructor(
                 _exerciseValidationFlow.emit(ExerciseValidationEvent.DurationValueIsNegative)
             }
 
+        }
+    }
+
+    fun deleteExerciseItem(exerciseBaseView: ExerciseBaseView){
+        viewModelScope.launch {
+            activityRepository.deleteExercise(exerciseBaseView.mapToDatabase())
+            userRepository.deleteBonusExerciseWater(exerciseBaseView.mapToDatabase().bonusActivityWater)
+            loadData()
         }
     }
 

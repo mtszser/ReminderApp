@@ -9,8 +9,8 @@ import com.mtszser.reminderapp.viewmodel.getDate
 @Entity(tableName = "water_table")
     data class DrankWaterBase(
     @PrimaryKey(autoGenerate = true) val waterContID: Int = 0,
-    @ColumnInfo val waterContCap: Int,
-    @ColumnInfo val waterContImg: Int,
+    @ColumnInfo val waterContCap: Int = 0,
+    @ColumnInfo val waterContImg: Int = 0,
     @ColumnInfo var addedDate: String = getDate(),
 )
 

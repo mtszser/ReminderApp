@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_table")
 data class UserProfile(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "firstName") val firstName: String?,
     @ColumnInfo(name = "weight") val weight: String?,
     @ColumnInfo(name = "containerId") val containerID: Int?,
@@ -15,14 +15,14 @@ data class UserProfile(
     @Embedded val drankWaterBase: DrankWaterBase,
 )
 data class WaterReminder(
-    @PrimaryKey(autoGenerate = true) val waterId: Int,
+    @PrimaryKey(autoGenerate = true) val waterId: Int = 0,
     val waterContainer: Int,
     val bonusWaterContainer: Int,
     val alreadyDrank: Int,
     val currentDate: String,
 )
 
-fun UserProfile.maptoView() = UserProfileView(
+fun UserProfile.mapToView() = UserProfileView(
     id = this.id,
     firstName = this.firstName,
     weight = this.weight,

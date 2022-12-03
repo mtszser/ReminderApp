@@ -23,6 +23,10 @@ class LoginViewModel @Inject constructor(private val repo: UserRepository): View
     private val _loginValidationFlow = MutableSharedFlow<LoginValidationEvent>()
     val loginValidationFlow = _loginValidationFlow as SharedFlow<LoginValidationEvent>
 
+    private var nameValidated: Boolean = false
+    private var weightValidated: Boolean = false
+    private var activityLevelValidated: Boolean = false
+
     init {
         loadProfile()
     }
@@ -67,7 +71,8 @@ class LoginViewModel @Inject constructor(private val repo: UserRepository): View
                 _loginValidationFlow.emit(LoginValidationEvent.NameIsEmpty)
             } else if(userName.length > 16 || !userName.all { it.isLetter() } || userName.length < 3){
                 _loginValidationFlow.emit(LoginValidationEvent.NameIsInvalid)
-            } else if (userName.isNotEmpty() && userName.length in 3..16 && userName.all { it.isLetter() }){
+            } else {
+                nameValidated = true
                 _loginValidationFlow.emit(LoginValidationEvent.NameIsValidated)
             }
         }
@@ -79,7 +84,8 @@ class LoginViewModel @Inject constructor(private val repo: UserRepository): View
                 _loginValidationFlow.emit(LoginValidationEvent.WeightIsEmpty)
             } else if(userWeight.toInt() !in 41..200) {
                 _loginValidationFlow.emit(LoginValidationEvent.WeightIsInvalid)
-            } else if(userWeight.toInt() in 41..200 && userWeight.isNotEmpty()){
+            } else {
+                weightValidated = true
                 _loginValidationFlow.emit(LoginValidationEvent.WeightIsValidated)
             }
         }
@@ -89,14 +95,21 @@ class LoginViewModel @Inject constructor(private val repo: UserRepository): View
         viewModelScope.launch {
             if(isEmpty){
                 _loginValidationFlow.emit(LoginValidationEvent.ActivityLevelIsNotPicked)
-            } else if(!isEmpty) {
+            } else {
+                activityLevelValidated = true
                 _loginValidationFlow.emit(LoginValidationEvent.ActivityLevelIsValidated)
             }
 
         }
     }
 
+    fun checkIfInputsAllValidated(): Boolean {
+        if(nameValidated && weightValidated && activityLevelValidated) {
+            return true
+        }
+        return false
     }
+}
 
 data class StateOfUser(
     val selectedActivityBonusWater: BaseActivities? = null,

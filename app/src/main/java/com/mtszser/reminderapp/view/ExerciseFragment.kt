@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -16,11 +17,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mtszser.reminderapp.R
 import com.mtszser.reminderapp.databinding.FragmentExerciseBinding
 import com.mtszser.reminderapp.model.DrankWaterBase
 import com.mtszser.reminderapp.model.ExerciseBase
 import com.mtszser.reminderapp.util.Const
+import com.mtszser.reminderapp.view.adapters.ExerciseRVAdapter
 import com.mtszser.reminderapp.view.adapters.ExercisesSpinnerAdapter
 import com.mtszser.reminderapp.viewmodel.ExerciseValidationEvent
 import com.mtszser.reminderapp.viewmodel.ExerciseViewModel
@@ -34,6 +37,10 @@ class ExerciseFragment : Fragment() {
 
     private lateinit var binding: FragmentExerciseBinding
     private val exerciseViewModel: ExerciseViewModel by viewModels()
+    private lateinit var exerciseAdapter: ExerciseRVAdapter
+
+    private val exerciseRecyclerView
+    get() = binding.exerciseRecyclerView
 
     private val workoutDuration
         get() = binding.workoutDuration
@@ -58,6 +65,7 @@ class ExerciseFragment : Fragment() {
         binding = FragmentExerciseBinding.inflate(inflater, container, false)
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -86,7 +94,7 @@ class ExerciseFragment : Fragment() {
             }
 
         backButton.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigate(ExerciseFragmentDirections.actionActivityFragmentToWaterFragment())
         }
 
         exerciseACTV.apply {
@@ -97,6 +105,17 @@ class ExerciseFragment : Fragment() {
                 addActivity()
 
             }
+
+        }
+
+        exerciseAdapter = ExerciseRVAdapter(onExerciseClicked = exerciseViewModel::deleteExerciseItem)
+        exerciseRecyclerView.apply {
+            adapter = exerciseAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        exerciseViewModel.exerciseState.observe(viewLifecycleOwner){ state ->
+            exerciseAdapter.submitList(state.baseExerciseList)
 
         }
 
@@ -112,8 +131,8 @@ class ExerciseFragment : Fragment() {
 
     private fun addActivity() {
         addActivityButton.setOnClickListener {
-            exerciseViewModel.addActivity(workoutDuration.toString().toInt())
-            findNavController().popBackStack()
+            exerciseViewModel.addActivity(workoutDuration.text.toString().toInt())
+            Toast.makeText(requireContext(), "Exercise added.", Toast.LENGTH_SHORT).show()
         }
     }
 }

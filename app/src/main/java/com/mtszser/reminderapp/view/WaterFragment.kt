@@ -85,6 +85,7 @@ class WaterFragment : Fragment() {
 
 
 
+
         waterAmountSpinner.apply {
             adapter = ContainerAdapter(requireContext())
             waterAmountSpinner.adapter = adapter

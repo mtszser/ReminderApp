@@ -27,6 +27,7 @@
     <string name="please_enter_valid_name">Name is invalid.</string>
     <string name="weight_is_empty">Weight is empty!</string>
     <string name="weight_is_invalid">Weight is invalid!</string>
+    <string name="exercise_bonus_water">%1$s %2$</string>
     <string name="select_activity_level">Select activity level</string>
     <string name="choose_activity_level">Choose activity level!</string>
     <string name="user_greetings">Hello ${state.userProfileView?.firstName}! This is your goal for today.</string>

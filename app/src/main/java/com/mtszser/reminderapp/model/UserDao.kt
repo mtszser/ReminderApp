@@ -39,7 +39,8 @@ interface UserDao {
     @Query("Select * from exercise_table")
     suspend fun getActivityList(): List<ExerciseBase>
 
-
+    @Query("Update user_table set bonusWaterContainer = bonusWaterContainer - :exerciseWaterIntake")
+    suspend fun deleteBonusExerciseWater(exerciseWaterIntake: Int)
 
 
     // Action Reminder Table INTERFACE

@@ -55,6 +55,10 @@ class UserRepository @Inject constructor(private val userDao: UserDao) {
         userDao.addToBonusWaterContainer(exerciseWaterIntake)
     }
 
+    suspend fun deleteBonusExerciseWater(exerciseWaterIntake: Int) {
+        userDao.deleteBonusExerciseWater(exerciseWaterIntake)
+    }
+
     // Action Repo Functions
 
 //    suspend fun getActionReminder(): List<ActionReminder>{

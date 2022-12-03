@@ -32,6 +32,7 @@ class WaterViewModel @Inject constructor(
     private val waterRepository: DrankWaterRepository
     ): ViewModel() {
 
+
     private val _waterUnitFlow = MutableSharedFlow<WaterEvent>()
     val waterUnitFlow = _waterUnitFlow as SharedFlow<WaterEvent>
 
@@ -42,7 +43,6 @@ class WaterViewModel @Inject constructor(
     init {
         loadDrankWaterList()
     }
-
 
     fun selectAmountOfWater(selectedAmountOfWater: DrankWaterBase) {
         _waterState.value = _waterState.value?.copy(
@@ -61,7 +61,7 @@ class WaterViewModel @Inject constructor(
                 drankWaterLabel = "$alreadyDrank / $waterNeededPerDay",
                 alreadyDrank = alreadyDrank,
                 waterPerDay = waterNeededPerDay,
-                userProfileView = userRepository.getUserProfile().maptoView()
+                userProfileView = userRepository.getUserProfile().mapToView()
             )
             compareDates()
 
@@ -72,8 +72,6 @@ class WaterViewModel @Inject constructor(
     fun addWaterAmount() {
         _waterState.value?.selectedAmountOfWater?.let {
             viewModelScope.launch {
-//                val waterNeededPerDay = userRepository.getWaterReminder().waterContainer +
-//                        userRepository.getWaterReminder().bonusWaterContainer
                 userRepository.addWater(it.waterContCap)
                 waterRepository.insertWaterContainer(it)
                 loadDrankWaterList()

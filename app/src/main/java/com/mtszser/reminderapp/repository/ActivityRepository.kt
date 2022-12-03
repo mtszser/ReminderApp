@@ -19,4 +19,8 @@ class ActivityRepository @Inject constructor(private val activityDao: ActivityDa
         return activityDao.getActivity()
     }
 
+    suspend fun deleteExercise(exerciseBase: ExerciseBase){
+        activityDao.deleteExercise(exerciseBase)
+    }
+
 }

@@ -7,3 +7,9 @@ data class ExerciseBaseView(
     val ebvBonusActivityWater: Int,
 
 )
+fun ExerciseBaseView.mapToDatabase() = ExerciseBase(
+    activityID = this.ebvID,
+    activityImage = this.ebvImage,
+    activityName = this.ebvName,
+    bonusActivityWater = this.ebvBonusActivityWater
+)
